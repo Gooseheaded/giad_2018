@@ -23,9 +23,19 @@ world
 	fps = 60
 	icon_size = 30
 
+	view = "32x18"//1920x1080 default
+
+	New()
+		.=..()
+
+		WorldInit()
+
+		MainLoop()
+
 proc
 	WorldInit()
 
+		gamePaused = 1
 
 		//initialize the collision quadtree
 		quadtreeRoots.len = world.maxz
@@ -43,6 +53,9 @@ proc
 			root.z = i
 			root.ComputeDims()
 			quadtreeRoots[i] = root
+
+
+		gamePaused = 0
 
 
 
@@ -90,6 +103,8 @@ atom
 			cOffsetY
 
 	movable
+		step_size = 1
+
 		PixelCoordsUpdate()
 			.=..()
 			pX += step_x

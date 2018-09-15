@@ -24,7 +24,7 @@ Collider
 
 		..()
 
-	New(vector/nOffset = new(0,0), vector/nAbsoluteOffset = new(0,0), nRadius = 1)
+	New(vector/nOffset = new(0,0,0), vector/nAbsoluteOffset = new(0,0,0), nRadius = 1)
 		.=..()
 		offset = nOffset
 		absoluteOffset = nAbsoluteOffset

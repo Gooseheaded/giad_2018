@@ -16,7 +16,15 @@ It also has: Passive speed, Rotation Speed, and Wind Speed Bonus
 */
 
 Ship
+	step_size = 1
+
 	parent_type = /obj
+	animate_movement = 0
+
+	appearance_flags = PIXEL_SCALE
+
+	pixel_x = -45
+	pixel_y = -45
 
 	var
 		cargo[0] //This is just a list of the items in the cargo
@@ -36,13 +44,15 @@ Ship
 		//colliders is a list of collision objects.
 		colliders
 
+		shadowHeight = 5
+
 		tmp
 			//sub pixel coordinates for step_x and step_y
-			subX
-			subY
+			subX = 0
+			subY = 0
 
 			//velocity and speed are in terms of "pixels per second"
-			vector/velocity = new(0,0)
+			vector/velocity = new(75,0,0)
 			currentSpeed
 			lastSpeed
 
@@ -51,15 +61,47 @@ Ship
 			lastAngle
 
 
+			wakeTimer
+			wakeDelay = 0.25
+
+	New()
+		.=..()
+		CreateShadow()
+
+		spawn
+			rotationSpeed = 100
+
+			while(src)
+				PhysicsStep()
+				sleep(world.tick_lag)
+
 	Del()
 		for(var/Collider/C in colliders)
 			del C
 		..()
 
 	proc
+		CreateShadow()
+			overlays.Cut()
+
+			var/mutable_appearance/ma = new(src)
+			ma.layer -= 0.1
+			ma.color = "#000000"
+			ma.alpha = 127
+			ma.pixel_x = shadowHeight
+			ma.pixel_y = -shadowHeight
+			ma.blend_mode = BLEND_MULTIPLY
+			ma.appearance_flags |= RESET_COLOR | RESET_ALPHA
+
+			overlays += ma
+
+
 		LinearStep(var/dt = deltaTime)
 
-			var/subdx = round(subX + velocity.x,1), subdy = round(subY + velocity.y,1)
+			var/velX = velocity.x * dt
+			var/velY = velocity.y * dt
+
+			var/subdx = round(subX + velX,1), subdy = round(subY + velY ,1)
 
 			//run collision check
 			cOffsetX = subdx
@@ -71,8 +113,8 @@ Ship
 				return 1
 
 			//run phys
-			subX += velocity.x
-			subY += velocity.y
+			subX += velX
+			subY += velY
 
 			subX -= subdx; subY -= subdy
 
@@ -134,6 +176,7 @@ Ship
 			//this function returns a nonzero if this physics step caused a collision.
 			var/collisionState = 0
 
+
 			if(LinearStep(dt))
 				velocity.x = 0
 				velocity.y = 0
@@ -143,4 +186,45 @@ Ship
 				rotationSpeed = 0
 				collisionState |= 2
 
+
+			if(gameTime > wakeTimer)
+				wakeTimer = gameTime + wakeDelay
+				if(velocity.x == 0 && velocity.y == 0) wakeTimer += wakeDelay * 2
+
+				new /Wake(src)
+
 			return collisionState
+
+
+Wake //this is the wake particle that is emitted by ships
+	parent_type = /obj
+	blend_mode = BLEND_ADD
+
+	var
+		duration = 5
+
+	New(Ship/S)
+		.=..()
+		icon = S.icon
+		icon_state = "wake"
+		alpha = 64
+		loc = S.loc
+		step_x = S.step_x
+		step_y = S.step_y
+		pixel_x = S.pixel_x
+		pixel_y = S.pixel_y
+		blend_mode = BLEND_ADD
+		layer = S.layer - 0.2
+
+		var/matrix/M = new()
+		var/angle = rand(-180,180)
+		M.Turn(angle)
+		transform = M
+
+		M.Scale(3,3)
+		angle += rand(-5,5)
+		M.Turn(angle)
+		animate(src, transform = M, alpha = 0, time=duration*10)
+
+		spawn(duration * 10)
+			del src
