@@ -19,8 +19,11 @@ client
 			world<<"CREATED A NEW SHIP THO"
 
 			myShip = new/Ship/StarterCaravel()
+			myShip.client = src
 
 			myShip.loc = locate(10,10,1)
+			myShip.PixelCoordsUpdate()
+			myShip.CollidersUpdate()
 
 			world<<"NEW SHIP: '[myShip]'"
 

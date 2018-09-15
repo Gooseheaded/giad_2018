@@ -39,13 +39,14 @@ Ship
 
 		//rotation speeds are in units of "degrees per second"
 		rotationSpeedLimit
-		rotationSpeed
 
 
 		//colliders is a list of collision objects.
-		colliders
+		list/colliders[]
 
 		shadowHeight = 5
+
+		client/client
 
 		tmp
 			//sub pixel coordinates for step_x and step_y
@@ -57,17 +58,22 @@ Ship
 			currentSpeed
 			lastSpeed
 
+			rotationSpeed
+
 			//angle is in terms of "degrees"
 			angle
 			lastAngle
 
 
 			wakeTimer
-			wakeDelay = 0.2
+			wakeDelay = 0.25
+			wakeLongDelay = 0.6
 
 			drag = 0.75
 
 			vector/forward = new(1,0,0)
+
+			bigRadius = 45 //this is for wide collision checks.
 
 	New()
 		.=..()
@@ -81,6 +87,12 @@ Ship
 		cargo[MAGENTA_SPICE] = rand(10,20)
 		cargo[GREEN_SPICE] = rand(10,20)
 		cargo[BLACK_SPICE] = rand(10,20)
+		for(var/Collider/C in colliders)
+			C.parent = src
+			C.densityFlags = 1
+
+		PixelCoordsUpdate()
+		CollidersUpdate()
 /*
 		spawn()
 			rotationSpeed = 100
@@ -133,21 +145,29 @@ Ship
 			rotationSpeed = rSpeed
 
 		CreateShadow()
+		/*
+			ship.filters = filter(type="drop_shadow", x=shadowHeight, y=-shadowHeight,\
+				size = 2, offset=2, color="F000000")
+		*/
+
 			overlays.Cut()
 
 			var/mutable_appearance/ma = new(src)
 			ma.layer -= 0.1
 			ma.color = "#000000"
-			ma.alpha = 127
+			ma.alpha = 160
 			ma.pixel_x = shadowHeight
 			ma.pixel_y = -shadowHeight
 			ma.blend_mode = BLEND_MULTIPLY
 			ma.appearance_flags |= RESET_COLOR | RESET_ALPHA
+			ma.filters += filter(type="blur", size = 2)
 
 			overlays += ma
 
 
+
 		LinearStep(var/dt = deltaTime)
+			if(velocity.x == 0 && velocity.y == 0) return
 
 			var/velX = velocity.x * dt
 			var/velY = velocity.y * dt
@@ -158,10 +178,12 @@ Ship
 			cOffsetX = subdx
 			cOffsetY = subdy
 
-			if(GlobalCollision() != null)
+			var/atom/collided = GlobalCollision()
+
+			if(collided != null)
 				cOffsetX = 0
 				cOffsetY = 0
-				return 1
+				return collided
 
 			//run phys
 			subX += velX
@@ -191,15 +213,18 @@ Ship
 
 
 		RotationStep(var/dt = deltaTime)
+			if(rotationSpeed == 0) return
+
 			angle += rotationSpeed * dt
 
 			CollidersUpdate()
 
-			if(GlobalCollision() != null)
+			var/atom/collided = GlobalCollision()
+			if(collided != null)
 				//if the rotation causes a collision, undo the rotation and return
 				angle = lastAngle
 				CollidersUpdate()
-				return 1
+				return collided
 
 			forward = vec3(1,0,0)
 			forward = forward.rotateAboutAxis(vec3(0,0,1), angle)
@@ -213,17 +238,21 @@ Ship
 
 		CollidersUpdate()
 			//this function updates collider positions
+
 			for(var/Collider/C in colliders)
-				var/vector/cCoord = vec2(pX, pY)
+
+				if(C.quadtree) C.quadtree.RemoveCollider(C)
+
+				var/vector/cCoord = vec3(pX, pY, 0)
 				cCoord = cCoord.add(C.absoluteOffset)
 				cCoord = cCoord.add(C.offset.rotateAboutAxis(vec3(0,0,1), angle))
 
-
-				C.quadtree.RemoveCollider(C)
 				C.pX = cCoord.x
 				C.pY = cCoord.y
+				C.z = src.z
 
-				quadtreeRoots[z].AddCollider(C)
+				if(z > 0 && quadtreeRoots.len >= z && quadtreeRoots[z] != null)
+					quadtreeRoots[z].AddCollider(C)
 
 
 		PhysicsStep(var/dt = deltaTime)
@@ -231,19 +260,41 @@ Ship
 			var/collisionState = 0
 
 
-			if(LinearStep(dt))
+			var/atom/collideLinear = LinearStep(dt)
+			var/atom/collideRotation = RotationStep(dt)
+
+			if(collideLinear)
 				velocity.x = 0
 				velocity.y = 0
 				collisionState |= 1
 
-			if(RotationStep(dt))
+				currentSpeed = 0
+				if(client) client.speedMode = 0
+
+				var/vector/accel = vec2(src.pX - collideLinear.pX, src.pY - collideLinear.pY)
+				accel.scaleToMagnitude(20)
+
+				velocity = velocity.add(accel)
+
+
+			if(collideRotation)
 				rotationSpeed = 0
 				collisionState |= 2
 
+				velocity.x = 0
+				velocity.y = 0
+
+				currentSpeed = 0
+				if(client) client.speedMode = 0
+
+				var/vector/accel = vec2(src.pX - collideRotation.pX, src.pY - collideRotation.pY)
+				accel.scaleToMagnitude(10)
+
+				velocity = velocity.add(accel)
+
 
 			if(gameTime > wakeTimer)
-				wakeTimer = gameTime + wakeDelay
-				if(velocity.x == 0 && velocity.y == 0) wakeTimer += wakeDelay * 4
+				wakeTimer = gameTime + wakeDelay + wakeLongDelay * (1 - currentSpeed / passiveSpeedLimit)
 
 				new /Wake(src)
 
@@ -270,6 +321,7 @@ Wake //this is the wake particle that is emitted by ships
 		blend_mode = BLEND_ADD
 		layer = S.layer - 0.2
 
+
 		var/matrix/M = new()
 		var/angle = rand(-180,180)
 		M.Turn(angle)
@@ -279,6 +331,9 @@ Wake //this is the wake particle that is emitted by ships
 		angle += rand(-5,5)
 		M.Turn(angle)
 		animate(src, transform = M, alpha = 0, time=duration*10)
+
+		WaterEffect()
+
 
 		spawn(duration * 10)
 			del src

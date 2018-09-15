@@ -9,3 +9,9 @@
 #define CYAN_SPICE "Cyan"
 #define GREEN_SPICE "Green"
 #define BLACK_SPICE "Black"
+
+#ifdef DEBUGPRINT
+#define _DEBUGPRINT(text)  world.log<<text
+#else
+#define _DEBUGPRINT(text)
+#endif

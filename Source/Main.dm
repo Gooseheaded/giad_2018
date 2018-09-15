@@ -19,6 +19,8 @@ var
 	//appActiveAtoms update EVERY FRAME regardless of paused status.
 	gamePaused
 
+	frameSpeed = 1
+
 	viewPWidth = 960
 	viewPHeight = 540
 
@@ -31,19 +33,24 @@ world
 	view = "32x18"//1920x1080 default
 
 	New()
+		//initialize the collision quadtree
+		InitQuadTrees()
+
+		gamePaused = 1
+
 		.=..()
 
 		WorldInit()
 
+		gamePaused = 0
+
 		MainLoop()
 
 proc
-	WorldInit()
-
-		gamePaused = 1
-
+	InitQuadTrees()
 		//initialize the collision quadtree
 		quadtreeRoots.len = world.maxz
+
 		var
 			worldWidth = world.maxx * ICON_WIDTH
 			worldHeight = world.maxy * ICON_HEIGHT
@@ -60,7 +67,11 @@ proc
 			quadtreeRoots[i] = root
 
 
-		gamePaused = 0
+	WorldInit()
+		for(var/obj/Terrain/Rock/R)
+			quadtreeRoots[1].AddCollider(R.collider)
+
+
 
 
 
@@ -70,7 +81,7 @@ proc
 		while(1)
 
 			sleep(0)
-			sleep(frameDelay)
+			sleep(frameDelay * frameSpeed)
 
 			appTime += deltaTime
 
@@ -85,6 +96,9 @@ proc
 
 			for(var/client/C in gameActiveAtoms)
 				C.TickUpdate()
+
+			for(var/AI/A in gameActiveAtoms)
+				A.TickUpdate()
 
 			for(var/atom/A in gameActiveAtoms)
 				if(gameTime > A.tickUpdateTimer)
@@ -118,3 +132,4 @@ atom
 			.=..()
 			pX += step_x
 			pY += step_y
+

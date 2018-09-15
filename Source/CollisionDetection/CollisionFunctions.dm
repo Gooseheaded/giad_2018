@@ -9,6 +9,8 @@ Ship
 	proc
 		GlobalCollision()
 			//returns null if no collisions!
+			//world<<"GLOBAL COLLISION CALL"
+
 			for(var/Collider/C in colliders)
 				var/otherColliders[] = quadtreeRoots[z].GetCircleContents(C.pX, C.pY, C.radius)
 
