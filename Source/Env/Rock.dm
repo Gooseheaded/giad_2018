@@ -53,6 +53,7 @@ obj/Terrain
 			CreateDeepShadow()
 				var/obj/O = new()
 				O.loc = src.loc
+				O.mouse_opacity = 0
 				O.step_x = src.step_x
 				O.step_y = src.step_y
 
