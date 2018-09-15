@@ -27,7 +27,7 @@ Ship
 	pixel_y = -45
 
 	var
-		cargo[0] //This is just a list of the items in the cargo
+		list/cargo = list() //This is just a list of the items in the cargo
 		cargoCapacity
 		leftCannon
 		rightCannon
@@ -79,6 +79,14 @@ Ship
 		.=..()
 		CreateShadow()
 
+		// Initial loadout
+		cargo[RED_SPICE] = rand(10,20)
+		cargo[YELLOW_SPICE] = rand(10,20)
+		cargo[BLUE_SPICE] = rand(10,20)
+		cargo[CYAN_SPICE] = rand(10,20)
+		cargo[MAGENTA_SPICE] = rand(10,20)
+		cargo[GREEN_SPICE] = rand(10,20)
+		cargo[BLACK_SPICE] = rand(10,20)
 		for(var/Collider/C in colliders)
 			C.parent = src
 			C.densityFlags = 1
