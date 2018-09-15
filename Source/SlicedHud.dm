@@ -1,4 +1,3 @@
-var/list/SlicedHudPieces = list()
 
 proc/DisplaySlicedHud(client/c, icon/icon, topLeftX, topLeftY, bottomRightX, bottomRightY, layer=1)
 	if (c == null)
@@ -28,6 +27,8 @@ proc/DisplaySlicedHud(client/c, icon/icon, topLeftX, topLeftY, bottomRightX, bot
 	if (layer < 1)
 		throw EXCEPTION("layer cannot be less than 1.")
 
+	var/list/slicedHudPieces = list()
+
 	var/obj/nwCorner = new()
 	nwCorner.icon = icon
 	nwCorner.icon_state = "Border"
@@ -35,7 +36,7 @@ proc/DisplaySlicedHud(client/c, icon/icon, topLeftX, topLeftY, bottomRightX, bot
 	nwCorner.screen_loc = "[topLeftX],[topLeftY]"
 	nwCorner.name = nwCorner.screen_loc
 	nwCorner.layer = layer
-	SlicedHudPieces.Add(nwCorner)
+	slicedHudPieces.Add(nwCorner)
 	c.screen.Add(nwCorner)
 
 	var/obj/neCorner = new()
@@ -45,7 +46,7 @@ proc/DisplaySlicedHud(client/c, icon/icon, topLeftX, topLeftY, bottomRightX, bot
 	neCorner.screen_loc = "[bottomRightX],[topLeftY]"
 	neCorner.name = neCorner.screen_loc
 	neCorner.layer = layer
-	SlicedHudPieces.Add(neCorner)
+	slicedHudPieces.Add(neCorner)
 	c.screen.Add(neCorner)
 
 	var/obj/swCorner = new()
@@ -55,7 +56,7 @@ proc/DisplaySlicedHud(client/c, icon/icon, topLeftX, topLeftY, bottomRightX, bot
 	swCorner.screen_loc = "[topLeftX],[bottomRightY]"
 	swCorner.name = swCorner.screen_loc
 	swCorner.layer = layer
-	SlicedHudPieces.Add(swCorner)
+	slicedHudPieces.Add(swCorner)
 	c.screen.Add(swCorner)
 
 	var/obj/seCorner = new()
@@ -65,7 +66,7 @@ proc/DisplaySlicedHud(client/c, icon/icon, topLeftX, topLeftY, bottomRightX, bot
 	seCorner.screen_loc = "[bottomRightX],[bottomRightY]"
 	seCorner.name = seCorner.screen_loc
 	seCorner.layer = layer
-	SlicedHudPieces.Add(seCorner)
+	slicedHudPieces.Add(seCorner)
 	c.screen.Add(seCorner)
 
 	var/list/nCorner = list()
@@ -78,7 +79,7 @@ proc/DisplaySlicedHud(client/c, icon/icon, topLeftX, topLeftY, bottomRightX, bot
 		o.name = o.screen_loc
 		nwCorner.layer = layer
 		nCorner.Add(o)
-	SlicedHudPieces.Add(nCorner)
+	slicedHudPieces.Add(nCorner)
 	c.screen.Add(nCorner)
 
 	var/list/sCorner = list()
@@ -91,7 +92,7 @@ proc/DisplaySlicedHud(client/c, icon/icon, topLeftX, topLeftY, bottomRightX, bot
 		o.name = o.screen_loc
 		nwCorner.layer = layer
 		sCorner.Add(o)
-	SlicedHudPieces.Add(sCorner)
+	slicedHudPieces.Add(sCorner)
 	c.screen.Add(sCorner)
 
 	var/list/wCorner = list()
@@ -104,7 +105,7 @@ proc/DisplaySlicedHud(client/c, icon/icon, topLeftX, topLeftY, bottomRightX, bot
 		o.name = o.screen_loc
 		nwCorner.layer = layer
 		wCorner.Add(o)
-	SlicedHudPieces.Add(wCorner)
+	slicedHudPieces.Add(wCorner)
 	c.screen.Add(wCorner)
 
 	var/list/eCorner = list()
@@ -117,7 +118,7 @@ proc/DisplaySlicedHud(client/c, icon/icon, topLeftX, topLeftY, bottomRightX, bot
 		o.name = o.screen_loc
 		nwCorner.layer = layer
 		eCorner.Add(o)
-	SlicedHudPieces.Add(eCorner)
+	slicedHudPieces.Add(eCorner)
 	c.screen.Add(eCorner)
 
 	var/list/filler = list()
@@ -130,14 +131,7 @@ proc/DisplaySlicedHud(client/c, icon/icon, topLeftX, topLeftY, bottomRightX, bot
 			o.name = o.screen_loc
 			nwCorner.layer = layer
 			filler.Add(o)
-	SlicedHudPieces.Add(filler)
+	slicedHudPieces.Add(filler)
 	c.screen.Add(filler)
 
-proc/ClearSlicedHud(client/c)
-	if (c == null)
-		throw EXCEPTION("Client cannot be null.")
-
-	c.screen.Remove(SlicedHudPieces)
-
-	for (var/piece in SlicedHudPieces)
-		del piece
+	return slicedHudPieces

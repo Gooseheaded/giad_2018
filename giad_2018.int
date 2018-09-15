@@ -1,11 +1,12 @@
 // BEGIN_INTERNALS
 /*
-LAST_COMPILE_TIME: 1536998096
-DIR: Source 
+MAP_ZOOM: 1.000
+LAST_COMPILE_TIME: 1537039541
+DIR: Assets Source 
 AUTO_FILE_DIR: ON
 MAP_ICON_TYPE: 0
-LAST_COMPILE_VERSION: 511.1385
-WINDOW: Source\SlicedHud.dm;Source\Main.dm
-FILE: Source\SlicedHud.dm
+LAST_COMPILE_VERSION: 512.1448
+WINDOW: Source\SlicedHud.dm;Source\MapSystem.dm;Source\Main.dm;Source\DockingAtPort.dm;Source\Dock.dm;Assets\Spices.dmi
+FILE: Source\DockingAtPort.dm
 */
 // END_INTERNALS
