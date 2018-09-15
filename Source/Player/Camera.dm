@@ -1,4 +1,6 @@
 client
+	perspective = EYE_PERSPECTIVE
+
 	var
 		camera/camera
 
@@ -13,13 +15,9 @@ camera
 
 	var
 		atom/movable/target
-		tweenSpeed = 0.3
+		tweenSpeed = 0.5
 		tweenThreshhold = 1
 		client/parent
-
-		parallaxes[0]
-
-		Stage/stage
 
 		vector/velocity = new(0,0,0)
 
@@ -60,9 +58,7 @@ camera
 			var/vector
 				targetPosition = target.pixelCoordsVector()
 				myPosition = pixelCoordsVector()
-				velocity
 
-			//targetPosition = targetPosition.add(vec2(targetCenter[1], targetCenter[2]))
 			targetPosition.x += targetCenter[1]
 			targetPosition.y += targetCenter[2] + target.pixel_z
 
@@ -84,8 +80,8 @@ camera
 					targetPosition.x = maxX
 
 			if(maxY >= 0)
-				if(targetPosition.y > maxY - maxY)
-					targetPosition.y = maxY - maxY
+				if(targetPosition.y > maxY)
+					targetPosition.y = maxY
 
 			velocity = targetPosition.subtract(myPosition)
 
@@ -120,7 +116,6 @@ camera
 	proc
 
 		LinearStep(var/dt = deltaTime)
-
 			var/velX = velocity.x * dt
 			var/velY = velocity.y * dt
 

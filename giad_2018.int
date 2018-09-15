@@ -1,12 +1,12 @@
 // BEGIN_INTERNALS
 /*
 MAP_ZOOM: 1.000
-LAST_COMPILE_TIME: 1537032013
+LAST_COMPILE_TIME: 1537034361
 DIR: Assets Levels Source Source\CollisionDetection Source\Env Source\Player Source\Ships Source\Util Source\Window 
 AUTO_FILE_DIR: ON
 MAP_ICON_TYPE: 0
-LAST_COMPILE_VERSION: 512.1434
-WINDOW: Source\Ship.dm;Source\CollisionDetection\Collider.dm;Source\Util\Vector.dm;Source\Main.dm;Levels\Map1.dmm;Assets\PlayerCaravel.dmi;Source\Ships\ShipDefinitions.dm;Source\Player\Camera.dm;Source\Util\Math.dm;Source\Util\Util.dm;Source\Player\Player.dm;Source\Interface.dmf;Source\Window\Fullscreen.dm;Source\_DEBUG.dm
-FILE: Source\Window\Fullscreen.dm
+LAST_COMPILE_VERSION: 512.1448
+WINDOW: Source\Ship.dm;Source\CollisionDetection\Collider.dm;Source\Util\Vector.dm;Source\Main.dm;Levels\Map1.dmm;Source\Player\Camera.dm;Source\Util\Math.dm;Source\Util\Util.dm;Source\Player\Player.dm;Source\Interface.dmf;Source\Window\Fullscreen.dm;Source\Ships\ShipDefinitions.dm
+FILE: Source\Player\Player.dm
 */
 // END_INTERNALS

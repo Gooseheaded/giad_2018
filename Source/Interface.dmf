@@ -1,5 +1,29 @@
 macro "macro"
 	elem 
+		name = "A"
+		command = "KeyDown \"A\""
+	elem 
+		name = "A+UP"
+		command = "KeyUp \"A\""
+	elem 
+		name = "D"
+		command = "KeyDown \"D\""
+	elem 
+		name = "D+UP"
+		command = "KeyUp \"D\""
+	elem 
+		name = "S"
+		command = "KeyDown \"S\""
+	elem 
+		name = "S+UP"
+		command = "KeyUp \"S\""
+	elem 
+		name = "W"
+		command = "KeyDown \"W\""
+	elem 
+		name = "W+UP"
+		command = "KeyUp W"
+	elem 
 		name = "F4"
 		command = "FullScreen"
 
@@ -19,7 +43,6 @@ window "_DEBUG"
 		size = 351x525
 		anchor1 = none
 		anchor2 = none
-		background-color = none
 		is-visible = false
 		border = line
 		saved-params = "pos;size;is-minimized;is-maximized"
@@ -42,7 +65,6 @@ window "_DEBUG"
 		is-default = true
 		border = line
 		saved-params = ""
-		tab-background-color = none
 	elem "output1"
 		type = OUTPUT
 		pos = 0,245
@@ -60,7 +82,6 @@ window "default"
 		size = 960x540
 		anchor1 = none
 		anchor2 = none
-		background-color = none
 		is-default = true
 		saved-params = "pos;size;is-minimized;is-maximized"
 		statusbar = false

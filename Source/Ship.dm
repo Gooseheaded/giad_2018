@@ -33,6 +33,7 @@ Ship
 		rightCannon
 
 		//linear speeds are in units of "Pixels per second"
+		revSpeedLimit
 		passiveSpeedLimit
 		windSpeedBonusMult
 
@@ -52,7 +53,7 @@ Ship
 			subY = 0
 
 			//velocity and speed are in terms of "pixels per second"
-			vector/velocity = new(75,0,0)
+			vector/velocity = new(0,0,0)
 			currentSpeed
 			lastSpeed
 
@@ -62,32 +63,66 @@ Ship
 
 
 			wakeTimer
-			wakeDelay = 0.25
+			wakeDelay = 0.2
+
+			drag = 0.75
+
+			vector/forward = new(1,0,0)
 
 	New()
 		.=..()
 		CreateShadow()
-
-		spawn
+/*
+		spawn()
 			rotationSpeed = 100
 
 			while(src)
 				PhysicsStep()
 				sleep(world.tick_lag)
+*/
 
 	Del()
 		for(var/Collider/C in colliders)
 			del C
+
+		gameActiveAtoms -= src
 		..()
 
 	TickUpdate()
+		//handle accelerations here
+		var/vector/acceleration = new(currentSpeed,0,0)
+		acceleration = acceleration.rotateAboutAxis(vec3(0,0,1) , angle)
+
+		velocity = velocity.multiply(1-drag)
+		velocity = velocity.add(acceleration)
+
+		if(forward.dot(windVector) > 0)
+			acceleration = new(windSpeedBonusMult * forward.dot(windVector),0,0)
+			velocity = velocity.add(acceleration)
+
+
 		//run the physics
+		PhysicsStep()
 
-		//if the physics failed, do a collision.
-
+		//if the physics failed, do a collision event?
 
 
 	proc
+		SetSpeedMode(mode)
+			switch(mode)
+				if(-1) currentSpeed = revSpeedLimit
+				if(0) currentSpeed = 0
+				if(1) currentSpeed = passiveSpeedLimit / 4
+				if(2) currentSpeed = passiveSpeedLimit / 2
+				if(3) currentSpeed = passiveSpeedLimit
+
+		SetRotationMode(rotationMode, speedMode)
+			var/rSpeed = rotationSpeedLimit * rotationMode
+			if(speedMode < 1)
+				rSpeed /= 2
+
+			rotationSpeed = rSpeed
+
 		CreateShadow()
 			overlays.Cut()
 
@@ -157,6 +192,9 @@ Ship
 				CollidersUpdate()
 				return 1
 
+			forward = vec3(1,0,0)
+			forward = forward.rotateAboutAxis(vec3(0,0,1), angle)
+
 			var/matrix/M = new()
 			M.Turn(-angle)
 
@@ -196,7 +234,7 @@ Ship
 
 			if(gameTime > wakeTimer)
 				wakeTimer = gameTime + wakeDelay
-				if(velocity.x == 0 && velocity.y == 0) wakeTimer += wakeDelay * 2
+				if(velocity.x == 0 && velocity.y == 0) wakeTimer += wakeDelay * 4
 
 				new /Wake(src)
 

@@ -22,6 +22,8 @@ var
 	viewPWidth = 960
 	viewPHeight = 540
 
+	vector/windVector = new(0,0,0)
+
 world
 	fps = 60
 	icon_size = 30

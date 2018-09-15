@@ -14,12 +14,14 @@ Ship
 
 				for(var/Collider/D in otherColliders)
 					if(C.parent == D.parent) continue
-					if(C.Intersects(D))
-						return D.parent
+					if(C.densityFlags &= 1)
+						if(C.Intersects(D))
+							return D.parent
 
 
 		ShipShipCollision(Ship/B)
 			for(var/Collider/C in colliders)
 				for(var/Collider/D in B.colliders)
-					if(C.Intersects(D))
-						return B
+					if(C.densityFlags &= 1)
+						if(C.Intersects(D))
+							return B

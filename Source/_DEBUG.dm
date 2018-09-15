@@ -7,3 +7,7 @@ client
 	New()
 		.=..()
 		winset(src,"_DEBUG","is-visible=true")
+
+	verb
+		newship()
+			CreateStarterShip()

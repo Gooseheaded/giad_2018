@@ -19,7 +19,7 @@ Collider
 		pY
 
 		densityFlags //density flags? :O These are bitflags
-		//1 - this is a hard collision. Ship on ship or ship on island
+		//1 - collides with ships
 		//2 - island avoidance collider. This is for near island warnings and AI pathfinding
 		//
 
