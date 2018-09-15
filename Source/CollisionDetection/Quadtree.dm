@@ -56,6 +56,7 @@ quadtree
 					else
 						//shape intersects this. add it!
 						contents |= O
+						O.quadtree = src
 
 		RemoveCollider(Collider/O, shouldPrune = 1)
 			contents -= O
@@ -175,3 +176,13 @@ quadtree
 
 		GetCircleContents(ax, ay, ar) //just treat the circle as a square
 			return GetRectContents(ax, ay, ar, ar)
+
+		ToString(var/level = 0)
+			var/string = "QUADTREE [level]: [min_x],[min_y],[max_x],[max_y]\n"
+			for(var/Collider/C in contents)
+				string += "- Collider: [C.parent]\n"
+			for(var/quadtree/child in children)
+				string += "\t [child.ToString(level+1)]"
+
+			if(level != 0) return string
+			world<<string

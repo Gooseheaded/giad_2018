@@ -1,5 +1,5 @@
 client
-	perspective = EYE_PERSPECTIVE
+	perspective = EYE_PERSPECTIVE | EDGE_PERSPECTIVE
 
 	var
 		camera/camera
@@ -15,7 +15,7 @@ camera
 
 	var
 		atom/movable/target
-		tweenSpeed = 0.5
+		tweenSpeed = 0.5  // can be set from 0 to 60. Must be nonzero
 		tweenThreshhold = 1
 		client/parent
 
