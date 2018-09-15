@@ -34,6 +34,7 @@ Collider
 		offset = nOffset
 		absoluteOffset = nAbsoluteOffset
 		radius = nRadius
+		densityFlags = nDensity
 
 	proc
 		Intersects(Collider/C)

@@ -12,10 +12,76 @@ AI
 		avoidTimer = 0
 
 		vector/longDestination = null //This is the long destination. For things like
+		navThreshold = 5
+
+		maxSpeedMode = 3
+
+		TradeRoute/tradeRoute
+
+	Del()
+		if(tradeRoute)
+			tradeRoute.RemoveShip(src)
+
+		..()
 
 	proc
+		SetDockDestination(Dock/D)
+			if(myShip == null) return
+
+			D.PixelCoordsUpdate()
+
+			longDestination = vec2(D.pX, D.pY)
+
+			//now do a collision check at the dock
+			var/colliders[] = quadtreeRoots[myShip.z].GetCircleContents(D.pX, D.pY, myShip.bigRadius)
+			for(var/Collider/C in colliders)
+				if(C.parent == myShip) continue
+				if((C.densityFlags & 1) == 0) continue
+				//there's a collision there. Instead just wait around...
+				longDestination = GetEmptyLocation(longDestination, myShip.bigRadius)
+
+		GetEmptyLocation(vector/loc, radius, densityMask = 1, iterations = 1)
+			//this function will find an empty position to put a circle of the given radius
+			var/vector/dest = new(0, 0, loc.z)
+			var/hasCollision = 0
+			dest.x = loc.x + rand(-radius * iterations, radius * iterations)
+			dest.y = loc.y + rand(-radius * iterations, radius * iterations)
+
+			do{
+				var/colliders[] = quadtreeRoots[myShip.z].GetCircleContents(dest.x, dest.y, radius)
+				for(var/Collider/C in colliders)
+					if(C.parent == myShip) continue
+					if((C.densityFlags & densityMask) == 0) continue
+
+					var/dx = C.pX - dest.x
+					var/dy = C.pY - dest.y
+					if(dx*dx+dy*dy > (C.radius + radius) * (C.radius + radius)) continue
+
+					hasCollision = 1
+					break
+
+
+				if(hasCollision)
+					iterations ++
+					dest.x = loc.x + rand(-radius * iterations, radius * iterations)
+					dest.y = loc.y + rand(-radius * iterations, radius * iterations)
+
+			}while(hasCollision)
+
+			return dest
+
+
 		TickUpdate()
-			NavToDest()
+			if(longDestination)
+				var/dx = longDestination.x - myShip.pX
+				var/dy = longDestination.y - myShip.pY
+				if(dx*dx+dy*dy > navThreshold)
+					NavToDest()
+				else
+					myShip.rotationSpeed = 0
+					myShip.SetSpeedMode(0)
+					longDestination = null
+
 
 		NavToDest(var/vector/destination = longDestination)
 			if(myShip == null) return
@@ -84,6 +150,8 @@ AI
 			if(forward.dot(difVecUnit) > 0.9 && dist > myShip.bigRadius * 2)
 				speedMode = 3
 
+			if(speedMode > maxSpeedMode) speedMode = maxSpeedMode
+
 			myShip.SetSpeedMode(speedMode)
 
 			//I should set my rotation towards the destination
@@ -99,3 +167,6 @@ AI
 			if(diffAngle > myShip.rotationSpeedLimit) diffAngle = myShip.rotationSpeedLimit
 
 			myShip.rotationSpeed = diffAngle
+
+
+		DepositCargoHome()

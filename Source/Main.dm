@@ -97,6 +97,9 @@ proc
 			for(var/client/C in gameActiveAtoms)
 				C.TickUpdate()
 
+			for(var/TradeRoute/R in gameActiveAtoms)
+				R.TickUpdate()
+
 			for(var/AI/A in gameActiveAtoms)
 				A.TickUpdate()
 
