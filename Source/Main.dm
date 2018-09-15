@@ -21,6 +21,7 @@ var
 
 world
 	fps = 60
+	icon_size = 30
 
 proc
 	MainLoop()
@@ -51,5 +52,18 @@ atom
 	proc
 		TickUpdate()
 
+		PixelCoordsUpdate()
+			pX = (x-1) * ICON_WIDTH
+			pY = (y-1) * ICON_HEIGHT
+
 	var
 		tickUpdateTimer
+		//world pixel coordinates, where bottom left corner of the world is 1,1
+		pX
+		pY
+
+	movable
+		PixelCoordsUpdate()
+			.=..()
+			pX += step_x
+			pY += step_y
