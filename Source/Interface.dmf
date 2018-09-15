@@ -1,0 +1,77 @@
+macro "macro"
+	elem 
+		name = "F4"
+		command = "FullScreen"
+
+
+menu "menu"
+	elem 
+		name = "&Quit"
+		command = ".quit"
+		category = "&File"
+		saved-params = "is-checked"
+
+
+window "_DEBUG"
+	elem "_DEBUG"
+		type = MAIN
+		pos = 279,27
+		size = 351x525
+		anchor1 = none
+		anchor2 = none
+		background-color = none
+		is-visible = false
+		border = line
+		saved-params = "pos;size;is-minimized;is-maximized"
+		menu = "menu"
+	elem "input1"
+		type = INPUT
+		pos = 0,504
+		size = 351x18
+		anchor1 = 0,96
+		anchor2 = 100,99
+		is-default = true
+		border = line
+		saved-params = ""
+	elem "info1"
+		type = INFO
+		pos = 0,0
+		size = 351x245
+		anchor1 = 0,0
+		anchor2 = 100,47
+		is-default = true
+		border = line
+		saved-params = ""
+		tab-background-color = none
+	elem "output1"
+		type = OUTPUT
+		pos = 0,245
+		size = 351x259
+		anchor1 = 0,47
+		anchor2 = 100,96
+		is-default = true
+		border = line
+		saved-params = "max-lines"
+
+window "default"
+	elem "default"
+		type = MAIN
+		pos = 281,0
+		size = 960x540
+		anchor1 = none
+		anchor2 = none
+		background-color = none
+		is-default = true
+		saved-params = "pos;size;is-minimized;is-maximized"
+		statusbar = false
+		can-resize = false
+		macro = "macro"
+	elem "map1"
+		type = MAP
+		pos = 0,0
+		size = 960x540
+		anchor1 = 0,0
+		anchor2 = 100,100
+		is-default = true
+		saved-params = "zoom;letterbox;zoom-mode"
+

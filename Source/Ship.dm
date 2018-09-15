@@ -80,6 +80,13 @@ Ship
 			del C
 		..()
 
+	TickUpdate()
+		//run the physics
+
+		//if the physics failed, do a collision.
+
+
+
 	proc
 		CreateShadow()
 			overlays.Cut()

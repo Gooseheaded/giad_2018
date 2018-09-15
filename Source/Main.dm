@@ -19,6 +19,9 @@ var
 	//appActiveAtoms update EVERY FRAME regardless of paused status.
 	gamePaused
 
+	viewPWidth = 960
+	viewPHeight = 540
+
 world
 	fps = 60
 	icon_size = 30
@@ -78,9 +81,13 @@ proc
 
 			gameTime += deltaTime
 
+			for(var/client/C in gameActiveAtoms)
+				C.TickUpdate()
+
 			for(var/atom/A in gameActiveAtoms)
 				if(gameTime > A.tickUpdateTimer)
 					A.TickUpdate()
+
 
 
 atom

@@ -18,13 +18,18 @@ Collider
 		pX
 		pY
 
+		densityFlags //density flags? :O These are bitflags
+		//1 - this is a hard collision. Ship on ship or ship on island
+		//2 - island avoidance collider. This is for near island warnings and AI pathfinding
+		//
+
 	Del()
 		if(quadtree)
 			quadtree.RemoveCollider(src)
 
 		..()
 
-	New(vector/nOffset = new(0,0,0), vector/nAbsoluteOffset = new(0,0,0), nRadius = 1)
+	New(vector/nOffset = new(0,0,0), vector/nAbsoluteOffset = new(0,0,0), nRadius = 1, nDensity = 1)
 		.=..()
 		offset = nOffset
 		absoluteOffset = nAbsoluteOffset
