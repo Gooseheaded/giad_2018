@@ -8,7 +8,7 @@ obj/Terrain
 		pixel_y = -30
 
 		var
-			radius = 25
+			radius = 24
 			Collider/collider
 
 			shadowHeight = 5
@@ -19,6 +19,10 @@ obj/Terrain
 
 			CreateShadow()
 			CreateDeepShadow()
+
+			var/matrix/M = new()
+			M.Turn(rand(-180,180))
+			transform = M
 
 			spawn(1)
 				collider = new()
@@ -67,10 +71,10 @@ obj/Terrain
 
 				var/matrix/M = new()
 				M.Scale(2)
+				M.Turn(rand(-180,180))
 				ma.transform = M
 
 				//O.appearance = ma
-				O.alpha = 32
-				O.WaterEffect(7)
+				O.WaterEffect(4)
 				O.appearance = ma
-				O.alpha = 32
+				O.alpha = rand(24,48)

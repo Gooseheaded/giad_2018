@@ -29,8 +29,7 @@ Ship
 	var
 		list/cargo = list() //This is just a list of the items in the cargo
 		cargoCapacity
-		leftCannon
-		rightCannon
+		cannons[0]
 
 		//linear speeds are in units of "Pixels per second"
 		revSpeedLimit
