@@ -305,6 +305,8 @@ Wake //this is the wake particle that is emitted by ships
 	parent_type = /obj
 	blend_mode = BLEND_ADD
 
+	mouse_opacity = 0
+
 	var
 		duration = 5
 
