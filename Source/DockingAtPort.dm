@@ -22,11 +22,11 @@ proc/DisplayTradingMenu(client/c, Dock/dock)
 		return
 
 	//32 x 18
-	var/list/toClear = DisplaySlicedHud(c, 'Assets/HUD.dmi', 8,12, 18,6 ,5)
+	var/list/toClear = DisplaySlicedHud(c, 'Assets/HUD.dmi', 11,12, 21,6 ,5)
 
 	var/obj/windowTitle = new()
 	windowTitle.icon = 'TradeOffersTitle.png'
-	windowTitle.screen_loc = "9,11"
+	windowTitle.screen_loc = "12,11"
 	windowTitle.layer = 6
 	toClear.Add(windowTitle)
 	c.screen.Add(windowTitle)
@@ -34,7 +34,7 @@ proc/DisplayTradingMenu(client/c, Dock/dock)
 	var/screenOffset = 0
 	for (var/TradeOffer/offer in dock.offers)
 		var/obj/placeholderIn = new()
-		placeholderIn.screen_loc = "9,[9+(screenOffset)]"
+		placeholderIn.screen_loc = "12,[9+(screenOffset)]"
 		placeholderIn.icon = 'Spices.dmi'
 		placeholderIn.icon_state = offer.inputProduct
 		placeholderIn.maptext = "x[offer.inputAmount]"
@@ -44,7 +44,7 @@ proc/DisplayTradingMenu(client/c, Dock/dock)
 		c.screen.Add(placeholderIn)
 
 		var/obj/placeholderFor = new()
-		placeholderFor.screen_loc = "11,[9+(screenOffset)]"
+		placeholderFor.screen_loc = "14,[9+(screenOffset)]"
 		placeholderFor.maptext = "<b>for</b>"
 		placeholderFor.maptext_y = 5
 		placeholderFor.maptext_x = -5
@@ -53,7 +53,7 @@ proc/DisplayTradingMenu(client/c, Dock/dock)
 		c.screen.Add(placeholderFor)
 
 		var/obj/placeholderOut = new()
-		placeholderOut.screen_loc = "12,[9+(screenOffset)]"
+		placeholderOut.screen_loc = "15,[9+(screenOffset)]"
 		placeholderOut.icon = 'Spices.dmi'
 		placeholderOut.icon_state = offer.outputProduct
 		placeholderOut.maptext = "x[offer.outputAmount]"
@@ -63,7 +63,7 @@ proc/DisplayTradingMenu(client/c, Dock/dock)
 		c.screen.Add(placeholderOut)
 
 		var/TradeButton/btn = new()
-		btn.screen_loc = "15,[9+(screenOffset)]"
+		btn.screen_loc = "18,[9+(screenOffset)]"
 		btn.offer = offer
 		toClear.Add(btn)
 		c.screen.Add(btn)
@@ -72,7 +72,7 @@ proc/DisplayTradingMenu(client/c, Dock/dock)
 
 	var/CloseTradeButton/closeBtn = new()
 	closeBtn.clear = toClear
-	closeBtn.screen_loc = "12,7"
+	closeBtn.screen_loc = "15,7"
 	closeBtn.layer = 6
 	c.screen.Add(closeBtn)
 
