@@ -105,3 +105,10 @@ Ship
 			CollidersUpdate()
 
 		CollidersUpdate()
+			for(var/Collider/C in colliders)
+				var/vector/cCoord = vec2(pX, pY)
+				cCoord = cCoord.add(C.absoluteOffset)
+				cCoord = cCoord.add(C.offset.rotateAboutAxis(vec3(0,0,1), angle))
+
+				C.pX = cCoord.x
+				C.pY = cCoord.y
