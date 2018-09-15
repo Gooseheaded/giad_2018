@@ -1,5 +1,8 @@
 
 #define DEBUG
+#define DEBUGPRINT
+
+
 
 //show the debugging window upon client login
 
@@ -11,3 +14,48 @@ client
 	verb
 		newship()
 			CreateStarterShip()
+
+		testQuadTree()
+			quadtreeRoots[1].ToString()
+
+		worldinit()
+			WorldInit()
+
+		GAMEPAUSE()
+			gamePaused = !gamePaused
+			if(gamePaused)
+				world<<"GAME PAUSED"
+			else
+				world<<"GAME UNPAUSED"
+
+		setFrameSpeed(var/speed as num)
+			frameSpeed = speed
+			world<<"FRAME SPEED SET TO: [speed]"
+
+
+
+	var
+		AI/myAI
+
+	verb
+		SpawnAI()
+			myAI = new()
+			myAI.myShip = new/Ship/StarterCaravel()
+
+			myAI.myShip.loc = locate(15,15,1)
+			myAI.myShip.PixelCoordsUpdate()
+			myAI.myShip.CollidersUpdate()
+
+			gameActiveAtoms += myAI
+			gameActiveAtoms += myAI.myShip
+
+
+turf
+	DblClick(loc, con, params)
+		.=..()
+		var/client/client = usr.client
+		if(client)
+			if(client.myAI)
+				PixelCoordsUpdate()
+				client.myAI.longDestination = vec2(src.pX, src.pY)
+				world<<"TRYING TO MOVE THE AI?: [client.myAI.longDestination.toString()]"

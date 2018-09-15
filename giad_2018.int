@@ -1,0 +1,12 @@
+// BEGIN_INTERNALS
+/*
+MAP_ZOOM: 1.000
+LAST_COMPILE_TIME: 1537045164
+DIR: Assets Levels Source Source\CollisionDetection Source\Effects Source\Env Source\Player Source\Ships Source\Util Source\Window 
+AUTO_FILE_DIR: ON
+MAP_ICON_TYPE: 0
+LAST_COMPILE_VERSION: 512.1448
+WINDOW: Source\Player\Player.dm;Source\Ship.dm;Source\CollisionDetection\Quadtree.dm;Source\CollisionDetection\CollisionFunctions.dm;Source\Env\Rock.dm;Source\Main.dm;Source\Ships\ShipDefinitions.dm;Source\_DEBUG.dm;Source\Player\Camera.dm;Source\Ships\ShipAI.dm;Assets\Ocean.dmi;Source\_DEFINE.dm
+FILE: Source\Ships\ShipAI.dm
+*/
+// END_INTERNALS
