@@ -24,10 +24,32 @@ world
 	icon_size = 30
 
 proc
+	WorldInit()
+
+
+		//initialize the collision quadtree
+		quadtreeRoots.len = world.maxz
+		var
+			worldWidth = world.maxx * ICON_WIDTH
+			worldHeight = world.maxy * ICON_HEIGHT
+
+
+		for(var/i = 1; i <= world.maxz; i++)
+			var/quadtree/root = new()
+			root.min_x = 1
+			root.min_y = 1
+			root.max_x = worldWidth
+			root.max_y = worldHeight
+			root.z = i
+			root.ComputeDims()
+			quadtreeRoots[i] = root
+
+
+
+
 	MainLoop()
 
 		while(1)
-
 
 			sleep(0)
 			sleep(frameDelay)
@@ -57,10 +79,15 @@ atom
 			pY = (y-1) * ICON_HEIGHT
 
 	var
-		tickUpdateTimer
-		//world pixel coordinates, where bottom left corner of the world is 1,1
-		pX
-		pY
+		tmp
+			tickUpdateTimer
+			//world pixel coordinates, where bottom left corner of the world is 1,1
+			pX
+			pY
+
+			//temporary offset variables for collision checking
+			cOffsetX
+			cOffsetY
 
 	movable
 		PixelCoordsUpdate()

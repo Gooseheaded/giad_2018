@@ -5,26 +5,21 @@
 
 
 
-
-
-proc
-	CollisionCheck(atom/A, atom/B)
-		//this function abstracts collision checks and supports different types of shapes.
-		//true is returned if the two atoms are touching
-
-	CollisionShipShip(Ship/A, Ship/B)
-
-
-atom
-	proc
-		CollisionCheckGlobal(atom/A, xOffset, yOffset, angleOffset)
-
-
-
 Ship
-	CollisionCheckGlobal(atom/A, xOffset, yOffset, angleOffset)
-		//first run turf collisions
+	proc
+		GlobalCollision()
+			//returns null if no collisions!
+			for(var/Collider/C in colliders)
+				var/otherColliders[] = quadtreeRoots[z].GetCircleContents(C.pX, C.pY, C.radius)
 
-		//now run object collisions
+				for(var/Collider/D in otherColliders)
+					if(C.parent == D.parent) continue
+					if(C.Intersects(D))
+						return D.parent
 
 
+		ShipShipCollision(Ship/B)
+			for(var/Collider/C in colliders)
+				for(var/Collider/D in B.colliders)
+					if(C.Intersects(D))
+						return B

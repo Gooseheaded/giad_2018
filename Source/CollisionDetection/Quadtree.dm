@@ -24,52 +24,50 @@ quadtree
 		quadtree/parent
 		quadtree/root
 
-		maxContents = 10
+		maxContents = 20
 		contents[0]
 
 	proc
-		addCollider(Collider/O)
+		AddCollider(Collider/O)
 			if(O.z != z) return
 
-			if(children.len)
-				/*
-				I have children, so I'll let them deal with adding this.
-				*/
-				for(var/quadtree/child in children)
-					child.addCollider(O)
+			var/ax = O.pX
+			var/ay = O.pY
+			var/ar = O.radius
 
-			else
-				if(contents.len + 1 >= maxContents)
-					split()
-					//now find the child that this belongs in and add it to them
+			var/dx = ax - center_x
+			var/dy = ay - center_y
+
+			if(abs(dx) <= ar/2 + width/2 && abs(dy) <= ar/2 + height/2)
+				if(children.len)
+					/*
+					I have children, so I'll let them deal with adding this.
+					*/
 					for(var/quadtree/child in children)
-						child.addCollider(O)
+						child.AddCollider(O)
 
 				else
-					//it's a circle. just treat it as an AABB square
-					var
+					if(contents.len + 1 >= maxContents)
+						Split()
+						//now find the child that this belongs in and add it to them
+						for(var/quadtree/child in children)
+							child.AddCollider(O)
 
-					var/ax = O.pX
-					var/ay = O.pY
-					var/ar = O.radius
-
-					var/dx = ax - center_x
-					var/dy = ay - center_y
-
-					if(abs(dx) <= ar/2 + width/2 && abs(dy) <= ar/2 + height/2)
-						/*
-						If the VoxObj's shape intersects this, then add it to my contents
-						*/
+					else
+						//shape intersects this. add it!
 						contents |= O
 
-		removeCollider(Collider/O)
+		RemoveCollider(Collider/O, shouldPrune = 1)
 			contents -= O
 
 			if(children.len)
 				for(var/quadtree/child in children)
-					child.removeCollider(O)
+					child.RemoveCollider(O, 0)
 
-		split() //create 4 child nodes
+			if(shouldPrune)
+				PruneChildren()
+
+		Split() //create 4 child nodes
 			children.Cut()
 
 			var/quadtree/child
@@ -83,7 +81,7 @@ quadtree
 			child.min_y = src.min_y
 			child.max_x = src.min_x + w/2
 			child.max_y = src.min_y + h/2
-			child.computeDims()
+			child.ComputeDims()
 			child.parent = src
 			child.root = src.root
 			children += child
@@ -94,7 +92,7 @@ quadtree
 			child.min_y = src.min_y
 			child.max_x = src.min_x + w
 			child.max_y = src.min_y + h/2
-			child.computeDims()
+			child.ComputeDims()
 			child.parent = src
 			child.root = src.root
 			children += child
@@ -105,7 +103,7 @@ quadtree
 			child.min_y = src.min_y + h/2
 			child.max_x = src.min_x + w/2
 			child.max_y = src.min_y + h
-			child.computeDims()
+			child.ComputeDims()
 			child.parent = src
 			child.root = src.root
 			children += child
@@ -116,28 +114,28 @@ quadtree
 			child.min_y = src.min_y + h/2
 			child.max_x = src.min_x + w
 			child.max_y = src.min_y + h
-			child.computeDims()
+			child.ComputeDims()
 			child.parent = src
 			child.root = src.root
 			children += child
 
 			for(var/Collider/O in contents)
-				addCollider(O)
+				AddCollider(O)
 
 			contents.Cut()
 
-		computeDims()
+		ComputeDims()
 			center_x = (min_x + max_x)/2
 			center_y = (min_y + max_y)/2
 
 			width = abs(max_x - min_x)
 			height = abs(max_y - min_y)
 
-		pruneChildren()
+		PruneChildren()
 			var/emptyChildren = 0
 			for(var/quadtree/child in children)
 				if(child.children.len > 0)
-					child.pruneChildren()
+					child.PruneChildren()
 				else
 					emptyChildren ++
 
@@ -147,7 +145,7 @@ quadtree
 
 				children.Cut()
 
-		getRectContents(ax, ay, aw, ah)
+		GetRectContents(ax, ay, aw, ah)
 			//ax, ay are x and y coordinates
 			//aw and ah are width and height of rect
 
@@ -168,12 +166,12 @@ quadtree
 						h = height
 
 					if(dx <= aw/2 + w/2 && dy <= ah/2 + h/2)
-						var/childContents[] = Q.getRectContents(ax, ay, aw, ah)
+						var/childContents[] = Q.GetRectContents(ax, ay, aw, ah)
 						outContents |= childContents
 			else
 				outContents |= contents
 
 			return outContents
 
-		getCircleContents(ax, ay, ar) //just treat the circle as a square
-			return getRectContents(ax, ay, ar, ar)
+		GetCircleContents(ax, ay, ar) //just treat the circle as a square
+			return GetRectContents(ax, ay, ar, ar)
