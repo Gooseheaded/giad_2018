@@ -10,6 +10,8 @@ client
 
 		list/resourcesHud = list()
 
+		list/homebank = list()
+
 	proc
 		CreateStarterShip()
 			if(mob) mob.loc = null
@@ -33,6 +35,14 @@ client
 			gameActiveAtoms += myShip
 			gameActiveAtoms += src
 			UpdateResourcesHud()
+
+			homebank[RED_SPICE] = 0
+			homebank[GREEN_SPICE] = 0
+			homebank[BLUE_SPICE] = 0
+			homebank[CYAN_SPICE] = 0
+			homebank[MAGENTA_SPICE] = 0
+			homebank[BLACK_SPICE] = 0
+			homebank[YELLOW_SPICE] = 0
 
 		UpdateResourcesHud()
 			if (myShip == null)
