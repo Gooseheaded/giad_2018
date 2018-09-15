@@ -1,3 +1,4 @@
+/*
 world
 	icon_size = 30
 	view = "32x18"
@@ -6,7 +7,7 @@ mob/verb/dock()
 	testDock.GenerateOffers(1)
 
 	DisplayTradingMenu(client, testDock)
-
+*/
 proc/IsPlayerDocked(client/c, Dock/dock)
 	var/speedLimit = 0.25
 	if (get_dist(c.myShip, dock) > 3)
@@ -80,7 +81,7 @@ proc/DisplayTradingMenu(client/c, Dock/dock)
 
 		screenOffset ++
 
-	var/CloseTradeButton/closeBtn = new()
+	var/CloseButton/closeBtn = new()
 	closeBtn.clear = toClear
 	closeBtn.screen_loc = "15,7"
 	closeBtn.layer = 6
@@ -106,7 +107,7 @@ TradeButton
 
 		world << "You traded x[offer.inputAmount] [offer.inputProduct] for x[offer.outputAmount] [offer.outputProduct]!"
 
-CloseTradeButton
+CloseButton
 	parent_type = /obj
 	icon = 'CloseButton.png'
 	layer = 6
