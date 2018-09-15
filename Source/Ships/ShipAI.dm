@@ -25,6 +25,18 @@ AI
 		..()
 
 	proc
+		TickUpdate()
+			if(longDestination)
+				var/dx = longDestination.x - myShip.pX
+				var/dy = longDestination.y - myShip.pY
+				if(dx*dx+dy*dy > navThreshold)
+					NavToDest()
+				else
+					myShip.rotationSpeed = 0
+					myShip.SetSpeedMode(0)
+					longDestination = null
+
+
 		SetDockDestination(Dock/D)
 			if(myShip == null) return
 
@@ -39,6 +51,7 @@ AI
 				if((C.densityFlags & 1) == 0) continue
 				//there's a collision there. Instead just wait around...
 				longDestination = GetEmptyLocation(longDestination, myShip.bigRadius)
+
 
 		GetEmptyLocation(vector/loc, radius, densityMask = 1, iterations = 1)
 			//this function will find an empty position to put a circle of the given radius
@@ -69,18 +82,6 @@ AI
 			}while(hasCollision)
 
 			return dest
-
-
-		TickUpdate()
-			if(longDestination)
-				var/dx = longDestination.x - myShip.pX
-				var/dy = longDestination.y - myShip.pY
-				if(dx*dx+dy*dy > navThreshold)
-					NavToDest()
-				else
-					myShip.rotationSpeed = 0
-					myShip.SetSpeedMode(0)
-					longDestination = null
 
 
 		NavToDest(var/vector/destination = longDestination)
@@ -170,3 +171,9 @@ AI
 
 
 		DepositCargoHome()
+
+
+
+	PlayerAI
+
+	PirateAI
