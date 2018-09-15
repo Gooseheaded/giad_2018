@@ -8,8 +8,13 @@ mob/verb/dock()
 	DisplayTradingMenu(client, testDock)
 
 proc/IsPlayerDocked(client/c, Dock/dock)
-	// TODO: pls
-	return TRUE
+	var/speedLimit = 0.25
+	if (get_dist(c.myShip, dock) > 3)
+		throw EXCEPTION("Cannot dock: too far away.")
+	if (c.myShip.currentSpeed > speedLimit || c.myShip.currentSpeed < -speedLimit)
+		throw EXCEPTION("Cannot dock: too fast.")
+
+	return get_dist(c.myShip, dock) < 3 && c.myShip.currentSpeed < speedLimit && c.myShip.currentSpeed > -speedLimit
 
 proc/DisplayTradingMenu(client/c, Dock/dock)
 	if (c == null)
@@ -25,16 +30,21 @@ proc/DisplayTradingMenu(client/c, Dock/dock)
 	var/list/toClear = DisplaySlicedHud(c, 'Assets/HUD.dmi', 11,12, 21,6 ,5)
 
 	var/obj/windowTitle = new()
-	windowTitle.icon = 'TradeOffersTitle.png'
 	windowTitle.screen_loc = "12,11"
 	windowTitle.layer = 6
+	windowTitle.maptext_width = 256
+	windowTitle.maptext_height = 64
+	windowTitle.maptext = "<b><font size=4>[dock.name]</font></b>"
+
 	toClear.Add(windowTitle)
 	c.screen.Add(windowTitle)
+
+	var/pixelOffset = dock.offers.len > 1 ? ":-15" : ""
 
 	var/screenOffset = 0
 	for (var/TradeOffer/offer in dock.offers)
 		var/obj/placeholderIn = new()
-		placeholderIn.screen_loc = "12,[9+(screenOffset)]"
+		placeholderIn.screen_loc = "12,[9+(screenOffset)][pixelOffset]"
 		placeholderIn.icon = 'Spices.dmi'
 		placeholderIn.icon_state = offer.inputProduct
 		placeholderIn.maptext = "x[offer.inputAmount]"
@@ -44,7 +54,7 @@ proc/DisplayTradingMenu(client/c, Dock/dock)
 		c.screen.Add(placeholderIn)
 
 		var/obj/placeholderFor = new()
-		placeholderFor.screen_loc = "14,[9+(screenOffset)]"
+		placeholderFor.screen_loc = "14,[9+(screenOffset)][pixelOffset]"
 		placeholderFor.maptext = "<b>for</b>"
 		placeholderFor.maptext_y = 5
 		placeholderFor.maptext_x = -5
@@ -53,7 +63,7 @@ proc/DisplayTradingMenu(client/c, Dock/dock)
 		c.screen.Add(placeholderFor)
 
 		var/obj/placeholderOut = new()
-		placeholderOut.screen_loc = "15,[9+(screenOffset)]"
+		placeholderOut.screen_loc = "15,[9+(screenOffset)][pixelOffset]"
 		placeholderOut.icon = 'Spices.dmi'
 		placeholderOut.icon_state = offer.outputProduct
 		placeholderOut.maptext = "x[offer.outputAmount]"
@@ -63,7 +73,7 @@ proc/DisplayTradingMenu(client/c, Dock/dock)
 		c.screen.Add(placeholderOut)
 
 		var/TradeButton/btn = new()
-		btn.screen_loc = "18,[9+(screenOffset)]"
+		btn.screen_loc = "18,[9+(screenOffset)][pixelOffset]"
 		btn.offer = offer
 		toClear.Add(btn)
 		c.screen.Add(btn)
@@ -83,7 +93,18 @@ TradeButton
 	var/TradeOffer/offer = null
 
 	Click()
-		world << "Player wants to trade x[offer.inputAmount] [offer.inputProduct] for x[offer.outputAmount] [offer.outputProduct]!"
+		var/Ship/s = usr.client.myShip
+
+		if (s.cargo[offer.inputProduct] < offer.inputAmount)
+			world << "You can't afford that! The offer requires [offer.inputAmount], but you only have [s.cargo[offer.inputProduct]]."
+			return
+
+		s.cargo[offer.inputProduct] -= offer.inputAmount
+		s.cargo[offer.outputProduct] += offer.outputAmount
+
+		usr.client.UpdateResourcesHud()
+
+		world << "You traded x[offer.inputAmount] [offer.inputProduct] for x[offer.outputAmount] [offer.outputProduct]!"
 
 CloseTradeButton
 	parent_type = /obj

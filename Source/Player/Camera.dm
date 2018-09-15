@@ -15,7 +15,7 @@ camera
 
 	var
 		atom/movable/target
-		tweenSpeed = 0.5
+		tweenSpeed = 0.5 * 1.8
 		tweenThreshhold = 1
 		client/parent
 
