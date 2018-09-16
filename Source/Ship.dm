@@ -29,8 +29,7 @@ Ship
 	var
 		list/cargo = list() //This is just a list of the items in the cargo
 		cargoCapacity
-		leftCannon
-		rightCannon
+		cannons[0]
 
 		//linear speeds are in units of "Pixels per second"
 		revSpeedLimit
@@ -73,7 +72,7 @@ Ship
 
 			vector/forward = new(1,0,0)
 
-			bigRadius = 45 //this is for wide collision checks.
+			bigRadius = 70 //this is for wide collision checks.
 
 	New()
 		.=..()
@@ -87,20 +86,12 @@ Ship
 		cargo[MAGENTA_SPICE] = rand(10,20)
 		cargo[GREEN_SPICE] = rand(10,20)
 		cargo[BLACK_SPICE] = rand(10,20)
+
 		for(var/Collider/C in colliders)
 			C.parent = src
-			C.densityFlags = 1
 
 		PixelCoordsUpdate()
 		CollidersUpdate()
-/*
-		spawn()
-			rotationSpeed = 100
-
-			while(src)
-				PhysicsStep()
-				sleep(world.tick_lag)
-*/
 
 	Del()
 		for(var/Collider/C in colliders)
@@ -299,6 +290,20 @@ Ship
 				new /Wake(src)
 
 			return collisionState
+
+		GetCurrentCargo()
+			var/sum = 0
+			for(var/i in cargo)
+				sum += cargo[i]
+			return sum
+
+		CanMakeTrade(TradeOffer/offer)
+			if(cargo[offer.inputProduct] < offer.inputAmount) return 0
+			var/cargoAmount = GetCurrentCargo()
+
+			if(cargoAmount - offer.inputAmount + offer.outputAmount > cargoCapacity) return 0
+
+			return 1
 
 
 Wake //this is the wake particle that is emitted by ships

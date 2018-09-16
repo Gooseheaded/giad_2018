@@ -34,6 +34,7 @@ Collider
 		offset = nOffset
 		absoluteOffset = nAbsoluteOffset
 		radius = nRadius
+		densityFlags = nDensity
 
 	proc
 		Intersects(Collider/C)
@@ -62,13 +63,13 @@ IslandCollider
 		Init()
 			PixelCoordsUpdate()
 
-			var/atom/island //find the island
+			var/Dock/dock //find the island
 
 			//now create a collider
 
 			var/Collider/collider = new()
 			collider.radius = radius
-			collider.parent = island
+			collider.parent = dock
 
 			collider.pX = pX
 			collider.pY = pY
