@@ -72,11 +72,14 @@ proc
 		for(var/obj/Terrain/Rock/R)
 			quadtreeRoots[1].AddCollider(R.collider)
 
-		BuildTradeUpTable()
-		BuildTradeDownTable()
+		spawn(1)
+			BuildTradeUpTable()
+			BuildTradeDownTable()
+			for(var/Dock/d)
+				d.GenerateOffers(pick(1,2))
 
-		for(var/Dock/d)
-			d.GenerateOffers(pick(1,2))
+			RandomWorldEventLoop()
+			BasicResourceGeneratorLoop()
 
 
 

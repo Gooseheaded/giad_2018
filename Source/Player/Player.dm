@@ -49,7 +49,6 @@ client
 			if (myShip == null)
 				throw EXCEPTION("myShip cannot be null.")
 
-			world << "Updating..."
 			resourcesHud[RED_SPICE].maptext = "<b>x[myShip.cargo[RED_SPICE]]</b>"
 			resourcesHud[GREEN_SPICE].maptext = "<b>x[myShip.cargo[GREEN_SPICE]]</b>"
 			resourcesHud[BLUE_SPICE].maptext = "<b>x[myShip.cargo[BLUE_SPICE]]</b>"

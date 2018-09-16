@@ -270,19 +270,51 @@ AI
 
 
 proc
-	SpawnPirates(vector/location, number)
-		for(var/i = 0; i < number; i++)
-			var/AI/PirateAI/AI = new()
-			AI.myShip = new/Ship/PirateSchooner()
+    SpawnPirates(vector/location, number, z = 1)
+        for(var/i = 0; i < number; i++)
+            var/AI/PirateAI/AI = new()
+            AI.myShip = new/Ship/PirateSchooner()
 
-			location = AI.GetEmptyLocation(vec2(location.x, location.y), AI.myShip.bigRadius, 1, 2)
+            location = GetEmptyLocation(vec2(location.x, location.y), z, AI.myShip.bigRadius, 1, 2)
 
-			AI.myShip.loc = locate(location.x / ICON_WIDTH,location.x / ICON_HEIGHT,1)
-			AI.myShip.step_x = location.x % ICON_WIDTH
-			AI.myShip.step_y = location.x % ICON_HEIGHT
+            AI.myShip.loc = locate(location.x / ICON_WIDTH,location.x / ICON_HEIGHT,1)
+            AI.myShip.step_x = location.x % ICON_WIDTH
+            AI.myShip.step_y = location.x % ICON_HEIGHT
 
-			AI.myShip.PixelCoordsUpdate()
-			AI.myShip.CollidersUpdate()
+            AI.myShip.PixelCoordsUpdate()
+            AI.myShip.CollidersUpdate()
 
-			gameActiveAtoms += AI
-			gameActiveAtoms += AI.myShip
+            gameActiveAtoms += AI
+            gameActiveAtoms += AI.myShip
+
+
+    GetEmptyLocation(vector/loc, z, radius, densityMask = 1, iterations = 1)
+        //this function will find an empty position to put a circle of the given radius
+        var/vector/dest = new(0, 0, loc.z)
+        var/hasCollision = 0
+        dest.x = loc.x + rand(-radius * iterations, radius * iterations)
+        dest.y = loc.y + rand(-radius * iterations, radius * iterations)
+        var/maxIterations = 50
+
+        do{
+            var/colliders[] = quadtreeRoots[z].GetCircleContents(dest.x, dest.y, radius)
+            for(var/Collider/C in colliders)
+                if((C.densityFlags & densityMask) == 0) continue
+
+                var/dx = C.pX - dest.x
+                var/dy = C.pY - dest.y
+                if(dx*dx+dy*dy > (C.radius + radius) * (C.radius + radius)) continue
+
+                hasCollision = 1
+                break
+
+
+            if(hasCollision)
+                iterations ++
+                dest.x = loc.x + rand(-radius * iterations, radius * iterations)
+                dest.y = loc.y + rand(-radius * iterations, radius * iterations)
+
+        }while(hasCollision && iterations < maxIterations)
+
+        return dest
+
