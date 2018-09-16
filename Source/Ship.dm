@@ -47,6 +47,8 @@ Ship
 
 		client/client
 
+		isHostile = 0
+
 		tmp
 			//sub pixel coordinates for step_x and step_y
 			subX = 0
