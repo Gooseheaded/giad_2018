@@ -37,7 +37,7 @@ client
 			gameActiveAtoms += src
 			UpdateResourcesHud()
 
-			homebank[BLACK_SPICE] = 0
+			homebank[BLACK_SPICE] = 100
 			homebank[YELLOW_SPICE] = 0
 			homebank[RED_SPICE] = 0
 			homebank[MAGENTA_SPICE] = 0

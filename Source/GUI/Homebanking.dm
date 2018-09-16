@@ -69,7 +69,7 @@ proc/DisplayHomebankingMenu(client/c, HomeIsland/home)
 		c.screen.Add(placeholderLeft)
 
 		var/obj/placeholderRight = new()
-		placeholderRight.screen_loc = "16:5,[12-(screenOffset)]"
+		placeholderRight.screen_loc = "16,[12-(screenOffset)]"
 		placeholderRight.icon = 'Spices.dmi'
 		placeholderRight.icon_state = spice
 		placeholderRight.maptext = MAPTEXT_COLOR + "x[c.homebank[spice]]"

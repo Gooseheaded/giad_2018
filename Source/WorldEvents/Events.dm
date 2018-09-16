@@ -28,18 +28,45 @@ proc
 		randomEventLoop = TRUE
 
 		spawn while(TRUE)
-			var/option = rand(1,2)
+			var/option = 1//rand(1,3)
 			if (option == 1)
-				RefreshDockOffers()
+				RoyalTax()
 			else if (option == 2)
+				RefreshDockOffers()
+			else if (option == 23)
 				PirateAttack()
 
 			sleep(300 * 10)
 
+	RoyalTax()
+		var/list/spices = list(BLACK_SPICE, YELLOW_SPICE, RED_SPICE, MAGENTA_SPICE, BLUE_SPICE, CYAN_SPICE, GREEN_SPICE)
+		var/spice = pick(spices)
+		var/taxAmount = max(5, round(rand(1, 300) / spices.Find(spice)))
+
+		world << "The Royal family demands tribute. Have at least x[taxAmount] [spice] deposited at home soon, or suffer the consequences!"
+		spawn(60 * 10)
+			var/client/c = null
+			for(var/client/x)
+				c = x
+				break
+			if (c != null)
+				if (c.homebank[spice] >= taxAmount)
+					world << "The Royal guard collects taxes you fairly, troubling you no more."
+					c.homebank[spice] -= taxAmount
+				else
+					world << "The Royal guard does not hear your excuses. All your spices are taxed."
+					for(var/x in spices)
+						c.homebank[x] = round(c.homebank[x] * (2 / 3))
+
+				for(var/x in spices)
+					for(var/obj/o in c.screen)
+						if (o.name == "Homebank [x]")
+							o.maptext = MAPTEXT_COLOR + "x[c.homebank[x]]"
+
 	RefreshDockOffers()
 		for(var/Dock/d)
 			d.GenerateOffers()
-		world << "All docks have refreshed their offers!"
+		world << "The market has radically changed! All docks have refreshed their offers!"
 
 	PirateAttack()
 		var/offScreenDistance = 32 * world.icon_size // 32 tiles, 30 px in size
