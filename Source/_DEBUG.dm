@@ -28,6 +28,14 @@ client
 			else
 				world<<"GAME UNPAUSED"
 
+
+		AIPAUSE()
+			AIpaused = !AIpaused
+			if(AIpaused)
+				world<<"AI PAUSED"
+			else
+				world<<"AI UNPAUSED"
+
 		setFrameSpeed(var/speed as num)
 			frameSpeed = speed
 			world<<"FRAME SPEED SET TO: [speed]"
@@ -46,6 +54,17 @@ client
 
 			gameActiveAtoms += myAI
 			gameActiveAtoms += myAI.myShip
+
+		SpawnPirateAI()
+			var/AI/PirateAI/AI = new()
+			AI.myShip = new/Ship/PirateSchooner()
+
+			AI.myShip.loc = locate(20,20,1)
+			AI.myShip.PixelCoordsUpdate()
+			AI.myShip.CollidersUpdate()
+
+			gameActiveAtoms += AI
+			gameActiveAtoms += AI.myShip
 
 
 turf

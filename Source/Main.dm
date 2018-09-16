@@ -18,6 +18,7 @@ var
 	//gameActiveAtoms do not update when the game is paused.
 	//appActiveAtoms update EVERY FRAME regardless of paused status.
 	gamePaused
+	AIpaused
 
 	frameSpeed = 1
 
@@ -102,11 +103,12 @@ proc
 			for(var/client/C in gameActiveAtoms)
 				C.TickUpdate()
 
-			for(var/TradeRoute/R in gameActiveAtoms)
-				R.TickUpdate()
+			if(!AIpaused)
+				for(var/TradeRoute/R in gameActiveAtoms)
+					R.TickUpdate()
 
-			for(var/AI/A in gameActiveAtoms)
-				A.TickUpdate()
+				for(var/AI/A in gameActiveAtoms)
+					A.TickUpdate()
 
 			for(var/atom/A in gameActiveAtoms)
 				if(gameTime > A.tickUpdateTimer)

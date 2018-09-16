@@ -157,3 +157,19 @@ client
 			myShip.SetSpeedMode(speedMode)
 
 			myShip.SetRotationMode(rotationMode, speedMode)
+
+
+Ship
+	Click(loc, con, params)
+		.=..()
+		var/client/C = usr.client
+
+
+		if(C && src.isHostile)
+			if(src in C.myShip.fireTargets)
+				C.myShip.fireTargets -= src
+			else
+				C.myShip.fireTargets |= src
+
+		if(C && src == C.myShip)
+			C.myShip.fireTargets.Cut()

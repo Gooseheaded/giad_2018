@@ -22,10 +22,14 @@ AI
 		if(tradeRoute)
 			tradeRoute.RemoveShip(src)
 
+		gameActiveAtoms -= src
+
 		..()
 
 	proc
 		TickUpdate()
+			if(myShip.isDead) del src
+
 			if(longDestination)
 				var/dx = longDestination.x - myShip.pX
 				var/dy = longDestination.y - myShip.pY
@@ -59,6 +63,7 @@ AI
 			var/hasCollision = 0
 			dest.x = loc.x + rand(-radius * iterations, radius * iterations)
 			dest.y = loc.y + rand(-radius * iterations, radius * iterations)
+			var/maxIterations = 50
 
 			do{
 				var/colliders[] = quadtreeRoots[myShip.z].GetCircleContents(dest.x, dest.y, radius)
@@ -79,7 +84,7 @@ AI
 					dest.x = loc.x + rand(-radius * iterations, radius * iterations)
 					dest.y = loc.y + rand(-radius * iterations, radius * iterations)
 
-			}while(hasCollision)
+			}while(hasCollision && iterations < maxIterations)
 
 			return dest
 
@@ -144,7 +149,7 @@ AI
 
 			if(forward.dot(difVecUnit) < -0.7)
 				speedMode = -1
-			if(forward.dot(difVecUnit) > 0.5 && dist > myShip.bigRadius / 2)
+			if(forward.dot(difVecUnit) > 0.3 && dist > myShip.bigRadius / 2)
 				speedMode = 1
 			if(forward.dot(difVecUnit) > 0.7 && dist > myShip.bigRadius)
 				speedMode = 2
@@ -171,9 +176,113 @@ AI
 
 
 		DepositCargoHome()
+			for(var/i in myShip.cargo)
+				for(var/client/C) //yep
+					C.homebank[i] += myShip.cargo[i]
+					myShip.cargo[i] = 0
 
 
 
 	PlayerAI
+		TickUpdate()
+			if(myShip.isDead) del src
+
+			UpdateFireTargets()
+
+			.=..()
+
+		proc
+			UpdateFireTargets()
+				myShip.fireTargets.Cut()
+
+				if(!myShip.cannons.len) return
+
+				for(var/Ship/S)
+					if(!S.isHostile) continue
+					if(S.isDocked) continue
+
+					for(var/Cannon/C in myShip.cannons)
+						if(C.CanFireAt(S))
+							myShip.fireTargets += S
+							break
+
+
+
 
 	PirateAI
+		var
+			Ship/chaseTarget
+
+		TickUpdate()
+			if(myShip.isDead) del src
+
+			//if I don't have anything to do, find the nearest player vessel...
+			if(chaseTarget && chaseTarget.isDocked)
+				chaseTarget = null
+
+			if(!chaseTarget)
+				myShip.fireTargets.Cut()
+				longDestination = null
+
+				FindNewTarget()
+
+			if(chaseTarget)
+				myShip.fireTargets = list(chaseTarget)
+
+				if(longDestination)
+					var/dx = longDestination.x - chaseTarget.pX
+					var/dy = longDestination.y - chaseTarget.pY
+					if(DIST(dx, dy) > 120)
+						longDestination = null
+
+				if(!longDestination)
+					longDestination = GetEmptyLocation(vec2(chaseTarget.pX, chaseTarget.pY), myShip.bigRadius, 1, 2)
+
+				if(longDestination)
+					var/dx = chaseTarget.x - myShip.pX
+					var/dy = chaseTarget.y - myShip.pY
+
+					if(DIST(dx, dy) < 250)
+						longDestination = null
+
+
+			.=..()
+
+		proc
+			FindNewTarget()
+				var/Ship/nearestTarget
+
+				for(var/Ship/S)
+					if(S.isDocked) continue
+					if(S.isHostile) continue
+					if(!nearestTarget) nearestTarget = S
+					else
+						var/dx = S.pX - myShip.pX
+						var/dy = S.pY - myShip.pY
+
+						var/tx = nearestTarget.pX - myShip.pX
+						var/ty = nearestTarget.pY - myShip.pY
+
+						if(dx*dx+dy*dy < tx*tx+ty*ty)
+							nearestTarget = S
+
+				chaseTarget = nearestTarget
+
+
+proc
+	SpawnPirates(vector/location, number)
+		for(var/i = 0; i < number; i++)
+			var/AI/PirateAI/AI = new()
+			AI.myShip = new/Ship/PirateSchooner()
+
+			location = AI.GetEmptyLocation(vec2(location.x, location.y), AI.myShip.bigRadius, 1, 2)
+
+			AI.myShip.loc = locate(location.x / ICON_WIDTH,location.x / ICON_HEIGHT,1)
+			AI.myShip.step_x = location.x % ICON_WIDTH
+			AI.myShip.step_y = location.x % ICON_HEIGHT
+
+			AI.myShip.PixelCoordsUpdate()
+			AI.myShip.CollidersUpdate()
+
+			gameActiveAtoms += AI
+			gameActiveAtoms += AI.myShip

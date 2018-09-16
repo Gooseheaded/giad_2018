@@ -27,6 +27,9 @@ proc/DisplayTradingMenu(client/c, Dock/dock)
 	if (!IsPlayerDocked(c, dock))
 		return
 
+	c.myShip.isDocked = 1
+	c.myShip.Repair()
+
 	//32 x 18
 	var/list/toClear = DisplaySlicedHud(c, 'Assets/HUD.dmi', 11,12, 21,6 ,5)
 
@@ -118,4 +121,5 @@ CloseButton
 
 	Click()
 		usr.client.screen.Remove(clear)
+		usr.client.myShip.isDocked = 0
 		del src
