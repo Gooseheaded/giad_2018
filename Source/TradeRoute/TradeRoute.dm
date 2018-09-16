@@ -218,11 +218,6 @@ TradeRoute
 				for(var/AI/AI in ais)
 					AI.longDestination = null
 
-				if(nodeIndex > 0 && nodeIndex <= nodes.len)
-					var/TradeNode/node = nodes[nodeIndex]
-					node.remainingTransactions = node.transactions.Copy()
-
-
 
 		RunDropoffNode()
 			nodeIndex = nodes.len + 1
@@ -391,7 +386,7 @@ TradeRoute
 			for(var/AI/AI in ais)
 				var/hasTrade = 0
 
-				for(var/TradeOffer/offer in node.transactions)
+				for(var/TradeOffer/offer in node.dock.offers)
 					if(AI.myShip.CanMakeTrade(offer))
 						hasTrade = 1
 						numTraders++
@@ -418,7 +413,7 @@ TradeRoute
 					canTrade = 0
 
 				var/hasTrade = 0
-				for(var/TradeOffer/offer in node.transactions)
+				for(var/TradeOffer/offer in node.dock.offers)
 					if(activeTrader.myShip.CanMakeTrade(offer))
 						hasTrade = 1
 						break
@@ -433,7 +428,7 @@ TradeRoute
 					if(gameTime > transTimer)
 						transTimer = gameTime + transDelay
 
-						for(var/TradeOffer/offer in node.transactions)
+						for(var/TradeOffer/offer in node.dock.offers)
 							if(activeTrader.myShip.CanMakeTrade(offer))
 								activeTrader.myShip.cargo[offer.inputProduct] -= offer.inputAmount
 								activeTrader.myShip.cargo[offer.outputProduct] += offer.outputAmount
@@ -454,10 +449,6 @@ TradeRoute
 				for(var/AI/AI in ais)
 					AI.longDestination = null
 
-				if(nodeIndex > 0 && nodeIndex <= nodes.len)
-					node = nodes[nodeIndex]
-					node.remainingTransactions = node.transactions.Copy()
-
 
 
 
@@ -465,10 +456,3 @@ TradeRoute
 TradeNode
 	var
 		Dock/dock
-
-		transactions[0] //these are TradeOffer objects that belong to the dock
-		//this format is:
-		//offer = num
-
-		remainingTransactions[0]
-		//this is a copy of transactions, but this will decrement the num as transactions are being performed.

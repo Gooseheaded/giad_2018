@@ -105,6 +105,10 @@ TradeButton
 			displayText("You can't afford that! The offer requires [offer.inputAmount] <font color=[offer.inputProduct]>O</font>, but you only have [s.cargo[offer.inputProduct]] <font color=[offer.inputProduct]>O</font>.")
 			return
 
+		if(usr.client.myShip.GetCurrentCargo() - offer.inputAmount + offer.outputAmount >= usr.client.myShip.cargoCapacity)
+			displayText("You don't have enough cargo space for that trade.")
+			return
+
 		s.cargo[offer.inputProduct] -= offer.inputAmount
 		s.cargo[offer.outputProduct] += offer.outputAmount
 

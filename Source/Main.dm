@@ -122,6 +122,12 @@ proc
 					A.TickUpdate()
 
 
+client
+	New()
+		for(var/client/C)
+			if(C != src)
+				del src //THIS IS A FUCKIN SINGLEPLAYER GAME OK
+		.=..()
 
 atom
 	proc
