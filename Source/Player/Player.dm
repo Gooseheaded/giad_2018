@@ -14,7 +14,7 @@ client
 		coins = 100000
 
 	proc
-		CreateStarterShip(vector/location, z = 1)
+		CreateStarterShip()
 			if(mob) mob.loc = null
 
 			if(myShip) del myShip
@@ -24,14 +24,11 @@ client
 			myShip = new/Ship/StarterCaravel()
 			myShip.client = src
 
-			location = GetEmptyLocation(vec2(location.x, location.y), z, myShip.bigRadius, 1, 3)
-
-			myShip.loc = locate(location.x / ICON_WIDTH,location.y / ICON_HEIGHT,1)
-			myShip.step_x = location.x % ICON_WIDTH
-			myShip.step_y = location.y % ICON_HEIGHT
-
+			myShip.loc = locate(10,10,1)
 			myShip.PixelCoordsUpdate()
 			myShip.CollidersUpdate()
+
+			world<<"NEW SHIP: '[myShip]'"
 
 			//set the camera
 			camera = new(src, myShip)
