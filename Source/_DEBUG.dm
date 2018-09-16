@@ -10,6 +10,7 @@ client
 	New()
 		.=..()
 		winset(src,"_DEBUG","is-visible=true")
+		src << sound('OceanAmbiance.ogg', volume=10, repeat=1)
 
 	verb
 		newship()

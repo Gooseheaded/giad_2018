@@ -19,7 +19,7 @@ Cannon
 
 		Ship/parent
 
-		fireSound
+		fireSound = 'CannonballSound.ogg'
 
 	New(Ship/S, nAngle)
 		.=..()
@@ -68,7 +68,7 @@ Cannon
 
 			//play the fire sound
 			if(fireSound)
-				Play_Sound(fireSound, parent, 5, 100, 1800, 64) //This is for playing one-off 3d sounds
+				Play_Sound(fireSound, parent, 5, 15,1800, 64) //This is for playing one-off 3d sounds
 
 			fireTimer = gameTime + fireDelay
 			return
@@ -92,8 +92,8 @@ obj/Cannonball
 
 		deathTimer = -1
 
-		hitSound
-		splashSound
+		hitSound = 'ShipHit.wav'
+		splashSound = 'Splash, Jumping, G.wav'
 
 		tmp
 			vector/velocity
@@ -135,7 +135,7 @@ obj/Cannonball
 			new/Wake(src)
 
 			if(splashSound)
-				Play_Sound(splashSound, src, 5, 100, 1800, 64)
+				Play_Sound(splashSound, src, 5, 25,1800, 64)
 
 			del src
 
@@ -150,7 +150,7 @@ obj/Cannonball
 					S.Sink()
 
 			if(hitSound)
-				Play_Sound(hitSound, S, 5, 100, 1800, 64)
+				Play_Sound(hitSound, S, 5, 15,1800, 64)
 
 			world<<"HIT [S]: [S.health]"
 

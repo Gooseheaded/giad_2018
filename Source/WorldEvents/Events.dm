@@ -2,6 +2,7 @@
 var/randomEventLoop = FALSE
 
 var/resourceGeneratorLoop = FALSE
+var/years = 0
 proc
 	BasicResourceGeneratorLoop()
 		if (resourceGeneratorLoop) return
@@ -38,7 +39,17 @@ proc
 			else if (option == 4)
 				BoomingEconomy()
 
-			sleep(300 * 10)
+			sleep(150 * 10)
+			years ++
+			displayText("This is year [years]. There [10 - years != 1 ? "are" : "is"] [10 - years] year[10 - years != 1 ? "s" : ""] left in your campaign.")
+			if (years == 10)
+				displayText("Your campaign ends soon! Sell as much as you can, as soon as possible!")
+			sleep(150 * 10)
+			if (years == 10)
+				displayText("Your campaign has ended!")
+				gamePaused = TRUE
+				break
+				// TODO(D4RK3): Upload the game score to the hub and end the game
 
 	RoyalTax()
 		var/list/spices = list(BLACK_SPICE, YELLOW_SPICE, RED_SPICE, MAGENTA_SPICE, BLUE_SPICE, CYAN_SPICE, GREEN_SPICE)
@@ -86,7 +97,7 @@ proc
 
 		var/pirateName = pick(pirateNames)
 
-		displayText("Beware! [pirateName] and their crew are after your head! ([result.toString()])")
+		displayText("Beware! [pirateName] and their crew are after your head!")
 		SpawnPirates(result, rand(1,3))
 
 	BoomingEconomy()

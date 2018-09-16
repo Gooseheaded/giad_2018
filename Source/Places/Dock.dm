@@ -6,6 +6,18 @@ TradeOffer
 		outputProduct = ""
 		outputAmount = 0
 
+FakeDock
+	parent_type = /obj
+
+	East
+		icon = 'NewDockEast.png'
+	North
+		icon = 'NewDockNorth.png'
+	South
+		icon = 'NewDockSouth.png'
+	West
+		icon = 'NewDockWest.png'
+
 Dock
 	parent_type = /obj
 	icon = 'DockingArea.png'
