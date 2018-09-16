@@ -59,11 +59,15 @@ IslandCollider
 		radius
 		islandID
 
+	invisibility = 0
+
 	proc
 		Init()
 			PixelCoordsUpdate()
 
 			var/Dock/dock //find the island
+
+			if(islandID) dock = locate(islandID)
 
 			//now create a collider
 
@@ -71,9 +75,42 @@ IslandCollider
 			collider.radius = radius
 			collider.parent = dock
 
+			if(!dock) collider.parent = src
+
 			collider.pX = pX
 			collider.pY = pY
+			collider.z = z
 
 			quadtreeRoots[z].AddCollider(collider)
 
-			del src
+			if(dock) del src
+
+	plane = 2
+	mouse_opacity = 0
+
+	New()
+		.=..()
+		//invisibility = 101
+
+	icon = 'Colliders.dmi'
+
+	nintey
+		icon_state = "90"
+		radius = 45
+		pixel_x = -45
+		pixel_y = -45
+	sixty
+		icon_state = "60"
+		radius = 30
+		pixel_x = -30
+		pixel_y = -30
+	thirty
+		icon_state = "30"
+		radius = 15
+		pixel_x = -15
+		pixel_y = -15
+	fifteen
+		icon_state = "10"
+		radius = 5
+		pixel_x = -5
+		pixel_y = -5

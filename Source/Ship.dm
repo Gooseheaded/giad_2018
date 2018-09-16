@@ -87,6 +87,8 @@ Ship
 			isDocked
 			showCannons = 0
 
+			isPlayer = 0
+
 	New()
 		.=..()
 		CreateShadow()
@@ -422,13 +424,23 @@ Ship
 			for(var/i in cargo)
 				cargo[i] = 0
 			//lose $100
-			client.coins -= 100
+			client.coins -= round(client.coins / 3)
+
 			client.UpdateResourcesHud()
 
 			//teleport me home and wipe my cargo
 			isDead = 0
 			health = maxHealth
 			isDocked = 0
+
+			var/HomeIsland/H = locate() in world
+			loc = H
+			step_x = 0
+			step_y = 0
+
+			PixelCoordsUpdate()
+			CollidersUpdate()
+
 
 
 		Repair()

@@ -1,4 +1,5 @@
 "a" = (/turf,/area)
+<<<<<<< HEAD
 "b" = (/turf,/turf/Island/C,/area)
 "c" = (/turf,/turf/Island/D,/area)
 "d" = (/turf,/turf/Island/A,/area)

@@ -82,6 +82,9 @@ proc
 			BasicResourceGeneratorLoop()
 			TextUpdateLoop()
 
+		for(var/IslandCollider/I)
+			I.Init()
+
 
 
 

@@ -25,7 +25,7 @@ Ship
 		isHostile = 1
 
 		revSpeedLimit = -15
-		passiveSpeedLimit = 75
+		passiveSpeedLimit = 60
 		windSpeedBonusMult = 40
 
 		maxHealth = 40
@@ -39,3 +39,22 @@ Ship
 							new/Collider(new/vector(-14,0,0), new/vector(0,0,0), 9, 1) )
 
 		cannons = list(new/Cannon/Pirate(null, 67.5), new/Cannon/Pirate(null, -67.5))
+
+
+Cannon
+	Basic
+		name = "Basic Cannon"
+		fireDelay = 3
+		fireInaccuracy = 2
+		fireDamage = 10
+		fireArc = 45
+		range = 500
+
+	Pirate
+		name = "Pirate Cannon"
+
+		fireDelay = 4
+		fireInaccuracy = 5
+		fireDamage = 5
+		range = 250
+		fireArc = 67.5
