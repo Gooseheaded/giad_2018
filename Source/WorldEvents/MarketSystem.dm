@@ -2,6 +2,7 @@
 var
 	tradeUpTable[7][7]
 	tradeDownTable[7][7]
+	boomingEconomy = null
 
 proc
 	BuildTradeUpTable()
@@ -26,7 +27,7 @@ proc
 			for (var/output in spices)
 				if (input == output) continue
 				if (tradeUpTable[spices.Find(input)][spices.Find(output)] == 0) continue
-				world << "[tradeUpTable[spices.Find(input)][spices.Find(output)]] [input] are required to get 1 [output]"
+				//displayText()"[tradeUpTable[spices.Find(input)][spices.Find(output)]] [input] are required to get 1 [output]"
 
 	BuildTradeDownTable()
 		var/list/spices = list(BLACK_SPICE, YELLOW_SPICE, RED_SPICE, MAGENTA_SPICE, BLUE_SPICE, CYAN_SPICE, GREEN_SPICE)
@@ -50,7 +51,7 @@ proc
 			for (var/output in spices)
 				if (input == output) continue
 				if (tradeUpTable[spices.Find(input)][spices.Find(output)] == 0) continue
-				world << "1 [output] yields [tradeUpTable[spices.Find(input)][spices.Find(output)]] [input]"
+				//displayText()"1 [output] yields [tradeUpTable[spices.Find(input)][spices.Find(output)]] [input]"
 
 	tradingFunction(inputSpice, outputSpice)
 		if (inputSpice == null)
@@ -75,10 +76,8 @@ proc
 		if (inIndex == outIndex)
 			return 1
 		else if (inIndex > outIndex)
-			world << "[tradeDownTable[inIndex][outIndex] * profitOrDiscountMargin] * profitOrDiscountMargin"
 			return round(tradeDownTable[inIndex][outIndex] * (1 + profitOrDiscountMargin))
 		else
-			world << "[tradeUpTable[inIndex][outIndex] * profitOrDiscountMargin] * profitOrDiscountMargin"
 			return round(tradeUpTable[inIndex][outIndex] * (1 - profitOrDiscountMargin))
 
 	sellingFunction(inputSpice)
@@ -89,5 +88,8 @@ proc
 		var/inIndex = spices.Find(inputSpice)
 		if (inIndex == 0)
 			throw EXCEPTION("inputSpice must be one of the 7 support spices.")
+
+		if (inputSpice == boomingEconomy)
+			return round(3 ** inIndex) * 2
 
 		return round(3 ** inIndex)

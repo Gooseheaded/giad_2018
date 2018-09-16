@@ -102,7 +102,7 @@ TradeButton
 		var/Ship/s = usr.client.myShip
 
 		if (s.cargo[offer.inputProduct] < offer.inputAmount)
-			world << "You can't afford that! The offer requires [offer.inputAmount], but you only have [s.cargo[offer.inputProduct]]."
+			displayText("You can't afford that! The offer requires [offer.inputAmount] <font color=[offer.inputProduct]>O</font>, but you only have [s.cargo[offer.inputProduct]] <font color=[offer.inputProduct]>O</font>.")
 			return
 
 		s.cargo[offer.inputProduct] -= offer.inputAmount
@@ -110,7 +110,7 @@ TradeButton
 
 		usr.client.UpdateResourcesHud()
 
-		world << "You traded x[offer.inputAmount] [offer.inputProduct] for x[offer.outputAmount] [offer.outputProduct]!"
+		displayText("You traded [offer.inputAmount] <font color=[offer.inputProduct]>O</font> for [offer.outputAmount] <font color=[offer.outputProduct]>O</font>!")
 
 CloseButton
 	parent_type = /obj

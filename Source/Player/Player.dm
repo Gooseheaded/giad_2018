@@ -37,7 +37,7 @@ client
 			gameActiveAtoms += src
 			UpdateResourcesHud()
 
-			homebank[BLACK_SPICE] = 0
+			homebank[BLACK_SPICE] = 100
 			homebank[YELLOW_SPICE] = 0
 			homebank[RED_SPICE] = 0
 			homebank[MAGENTA_SPICE] = 0
@@ -49,7 +49,6 @@ client
 			if (myShip == null)
 				throw EXCEPTION("myShip cannot be null.")
 
-			world << "Updating..."
 			resourcesHud[RED_SPICE].maptext = "<b>x[myShip.cargo[RED_SPICE]]</b>"
 			resourcesHud[GREEN_SPICE].maptext = "<b>x[myShip.cargo[GREEN_SPICE]]</b>"
 			resourcesHud[BLUE_SPICE].maptext = "<b>x[myShip.cargo[BLUE_SPICE]]</b>"
