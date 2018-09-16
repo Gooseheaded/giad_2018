@@ -20,13 +20,13 @@ Dock
 			duplicates.Add(d.name)
 
 		name = pick(dockNames - duplicates)
-		GenerateOffers(pick(1,2))
 
 		icon = 'Dock.png'
 		pixel_x -= 62
 		pixel_y -= 53
 
 	Click()
+		GenerateOffers()
 		DisplayTradingMenu(usr.client, src)
 
 	proc
@@ -36,18 +36,33 @@ Dock
 
 			offers = list()
 
-			var/list/inputOptions = list(RED_SPICE, YELLOW_SPICE, GREEN_SPICE, BLUE_SPICE, MAGENTA_SPICE, CYAN_SPICE, BLACK_SPICE)
+			var/list/spices = list(BLACK_SPICE, YELLOW_SPICE, RED_SPICE, MAGENTA_SPICE, BLUE_SPICE, CYAN_SPICE, GREEN_SPICE)
+			var/list/ref = list(BLACK_SPICE, YELLOW_SPICE, RED_SPICE, MAGENTA_SPICE, BLUE_SPICE, CYAN_SPICE, GREEN_SPICE)
 
 			for(var/i = 0, i < amount, i ++)
 				var/TradeOffer/offer = new()
-				offer.inputAmount = rand(3,5)
-				offer.inputProduct = pick(inputOptions)
-				inputOptions.Remove(offer.inputProduct)
-				offer.outputAmount = offer.inputAmount + rand(1,3)
-				offer.outputProduct = offer.inputProduct
-				while (offer.outputProduct == offer.inputProduct)
-					offer.outputProduct = pick(RED_SPICE, YELLOW_SPICE, GREEN_SPICE, BLUE_SPICE, MAGENTA_SPICE, CYAN_SPICE, BLACK_SPICE)
+				offer.inputProduct = pick(spices)
+				spices.Remove(offer.inputProduct)
+
+				offer.outputProduct = pick(spices - offer.inputProduct)
+
+				var/combo = rand(5, 10)
+
+				if (ref.Find(offer.inputProduct) > ref.Find(offer.outputProduct))
+					offer.inputAmount = combo
+					offer.outputAmount = round((1 + (combo / 100)) * combo * tradingFunction(offer.inputProduct, offer.outputProduct))
+				else
+					offer.inputAmount = round((1 - (combo / 100)) * combo * tradingFunction(offer.inputProduct, offer.outputProduct))
+					offer.outputAmount = combo
+
+				if (offer.inputAmount == offer.outputAmount)
+					i --
+					continue;
+
+				// Success
 				offers.Add(offer)
+				spices.Remove(offer.outputProduct)
+				spices.Remove(offer.inputProduct)
 
 var/list/dockNames = list(
 	"Thunder Hideout",

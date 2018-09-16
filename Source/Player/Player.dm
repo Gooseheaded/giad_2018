@@ -37,13 +37,13 @@ client
 			gameActiveAtoms += src
 			UpdateResourcesHud()
 
-			homebank[RED_SPICE] = 0
-			homebank[GREEN_SPICE] = 0
-			homebank[BLUE_SPICE] = 0
-			homebank[CYAN_SPICE] = 0
-			homebank[MAGENTA_SPICE] = 0
 			homebank[BLACK_SPICE] = 0
 			homebank[YELLOW_SPICE] = 0
+			homebank[RED_SPICE] = 0
+			homebank[MAGENTA_SPICE] = 0
+			homebank[BLUE_SPICE] = 0
+			homebank[CYAN_SPICE] = 0
+			homebank[GREEN_SPICE] = 0
 
 		UpdateResourcesHud()
 			if (myShip == null)
@@ -59,61 +59,68 @@ client
 			resourcesHud[YELLOW_SPICE].maptext = "<b>x[myShip.cargo[YELLOW_SPICE]]</b>"
 
 	New()
+		var/obj/blackCounter = new()
+		blackCounter.screen_loc = "NORTH,WEST"
+		blackCounter.icon = 'Spices.dmi'
+		blackCounter.icon_state = BLACK_SPICE
+		blackCounter.maptext_x = 28
+		blackCounter.maptext_width = 60
+		resourcesHud[BLACK_SPICE] = blackCounter
+		screen.Add(blackCounter)
+
+		var/obj/yellowCounter = new()
+		yellowCounter.screen_loc = "NORTH,WEST+2"
+		yellowCounter.icon = 'Spices.dmi'
+		yellowCounter.icon_state = YELLOW_SPICE
+		yellowCounter.maptext_x = 28
+		yellowCounter.maptext_width = 60
+		resourcesHud[YELLOW_SPICE] = yellowCounter
+		screen.Add(yellowCounter)
+
 		var/obj/redCounter = new()
-		redCounter.screen_loc = "NORTH,WEST"
+		redCounter.screen_loc = "NORTH,WEST+4"
 		redCounter.icon = 'Spices.dmi'
 		redCounter.icon_state = RED_SPICE
 		redCounter.maptext_x = 28
+		redCounter.maptext_width = 60
 		resourcesHud[RED_SPICE] = redCounter
 		screen.Add(redCounter)
 
-		var/obj/greenCounter = new()
-		greenCounter.screen_loc = "NORTH,WEST+2"
-		greenCounter.icon = 'Spices.dmi'
-		greenCounter.icon_state = GREEN_SPICE
-		greenCounter.maptext_x = 28
-		resourcesHud[GREEN_SPICE] = greenCounter
-		screen.Add(greenCounter)
+		var/obj/magentaCounter = new()
+		magentaCounter.screen_loc = "NORTH,WEST+6"
+		magentaCounter.icon = 'Spices.dmi'
+		magentaCounter.icon_state = MAGENTA_SPICE
+		magentaCounter.maptext_x = 28
+		magentaCounter.maptext_width = 60
+		resourcesHud[MAGENTA_SPICE] = magentaCounter
+		screen.Add(magentaCounter)
 
 		var/obj/blueCounter = new()
-		blueCounter.screen_loc = "NORTH,WEST+4"
+		blueCounter.screen_loc = "NORTH,WEST+8"
 		blueCounter.icon = 'Spices.dmi'
 		blueCounter.icon_state = BLUE_SPICE
 		blueCounter.maptext_x = 28
+		blueCounter.maptext_width = 60
 		resourcesHud[BLUE_SPICE] = blueCounter
 		screen.Add(blueCounter)
 
 		var/obj/cyanCounter = new()
-		cyanCounter.screen_loc = "NORTH,WEST+6"
+		cyanCounter.screen_loc = "NORTH,WEST+10"
 		cyanCounter.icon = 'Spices.dmi'
 		cyanCounter.icon_state = CYAN_SPICE
 		cyanCounter.maptext_x = 28
+		cyanCounter.maptext_width = 60
 		resourcesHud[CYAN_SPICE] = cyanCounter
 		screen.Add(cyanCounter)
 
-		var/obj/magentaCounter = new()
-		magentaCounter.screen_loc = "NORTH,WEST+8"
-		magentaCounter.icon = 'Spices.dmi'
-		magentaCounter.icon_state = MAGENTA_SPICE
-		magentaCounter.maptext_x = 28
-		resourcesHud[MAGENTA_SPICE] = magentaCounter
-		screen.Add(magentaCounter)
-
-		var/obj/yellowCounter = new()
-		yellowCounter.screen_loc = "NORTH,WEST+10"
-		yellowCounter.icon = 'Spices.dmi'
-		yellowCounter.icon_state = YELLOW_SPICE
-		yellowCounter.maptext_x = 28
-		resourcesHud[YELLOW_SPICE] = yellowCounter
-		screen.Add(yellowCounter)
-
-		var/obj/blackCounter = new()
-		blackCounter.screen_loc = "NORTH,WEST+12"
-		blackCounter.icon = 'Spices.dmi'
-		blackCounter.icon_state = BLACK_SPICE
-		blackCounter.maptext_x = 28
-		resourcesHud[BLACK_SPICE] = blackCounter
-		screen.Add(blackCounter)
+		var/obj/greenCounter = new()
+		greenCounter.screen_loc = "NORTH,WEST+12"
+		greenCounter.icon = 'Spices.dmi'
+		greenCounter.icon_state = GREEN_SPICE
+		greenCounter.maptext_x = 28
+		greenCounter.maptext_width = 60
+		resourcesHud[GREEN_SPICE] = greenCounter
+		screen.Add(greenCounter)
 
 		..()
 

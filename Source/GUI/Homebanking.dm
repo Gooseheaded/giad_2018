@@ -51,7 +51,7 @@ proc/DisplayHomebankingMenu(client/c, HomeIsland/home)
 	toClear.Add(bankTitle)
 	c.screen.Add(bankTitle)
 
-	var/list/spices = list(RED_SPICE, BLUE_SPICE, GREEN_SPICE, YELLOW_SPICE, MAGENTA_SPICE, CYAN_SPICE, BLACK_SPICE)
+	var/list/spices = list(BLACK_SPICE, YELLOW_SPICE, RED_SPICE, MAGENTA_SPICE, BLUE_SPICE, CYAN_SPICE, GREEN_SPICE)
 	var/screenOffset = 0
 	for (var/spice in spices)
 		var/obj/placeholderLeft = new()
@@ -82,7 +82,7 @@ proc/DisplayHomebankingMenu(client/c, HomeIsland/home)
 		placeholderPrice.screen_loc = "18:-10,[12-(screenOffset)]"
 		placeholderPrice.maptext_width = 200
 		placeholderPrice.maptext_height = 60
-		placeholderPrice.maptext = MAPTEXT_COLOR + "[rand(50,150)] each" // TODO: Market price
+		placeholderPrice.maptext = MAPTEXT_COLOR + "[sellingFunction(spice)] each"
 		placeholderPrice.maptext_y = 6
 		placeholderPrice.maptext_x = 24
 		placeholderPrice.layer = 6
@@ -168,7 +168,7 @@ SellButton
 
 		usr << sound('SellSound.wav', volume=25)
 		usr.client.homebank[spice] --
-		usr.client.coins += 100 // TODO: Market price
+		usr.client.coins += sellingFunction(spice)
 
 		for(var/obj/o in usr.client.screen)
 			if (o.name == "Homebank [spice]")
