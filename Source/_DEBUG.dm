@@ -32,8 +32,6 @@ client
 			frameSpeed = speed
 			world<<"FRAME SPEED SET TO: [speed]"
 
-
-
 	var
 		AI/myAI
 
