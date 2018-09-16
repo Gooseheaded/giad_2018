@@ -39,12 +39,12 @@ proc
 			else if (option == 4)
 				BoomingEconomy()
 
-			sleep(3 * 10)
+			sleep(150 * 10)
 			years ++
 			displayText("This is year [years]. There [10 - years != 1 ? "are" : "is"] [10 - years] year[10 - years != 1 ? "s" : ""] left in your campaign.")
 			if (years == 10)
 				displayText("Your campaign ends soon! Sell as much as you can, as soon as possible!")
-			sleep(3 * 10)
+			sleep(150 * 10)
 			if (years == 10)
 				displayText("Your campaign has ended!")
 				gamePaused = TRUE
