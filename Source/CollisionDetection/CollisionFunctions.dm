@@ -10,6 +10,7 @@ Ship
 		GlobalCollision()
 			//returns null if no collisions!
 			//world<<"GLOBAL COLLISION CALL"
+			if(z < 0 || z > world.maxz) return
 
 			for(var/Collider/C in colliders)
 				var/otherColliders[] = quadtreeRoots[z].GetCircleContents(C.pX, C.pY, C.radius)

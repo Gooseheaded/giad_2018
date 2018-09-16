@@ -40,6 +40,9 @@ client
 			frameSpeed = speed
 			world<<"FRAME SPEED SET TO: [speed]"
 
+		showTradeRouteUI()
+			OpenTradeRouteWindow(src, locate(/HomeIsland) in world)
+
 	var
 		AI/myAI
 

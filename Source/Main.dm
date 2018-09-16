@@ -78,6 +78,9 @@ proc
 		for(var/Dock/d)
 			d.GenerateOffers(pick(1,2))
 
+		for(var/IslandCollider/I)
+			I.Init()
+
 
 
 

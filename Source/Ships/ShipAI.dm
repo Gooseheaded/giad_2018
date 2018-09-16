@@ -58,6 +58,7 @@ AI
 
 
 		GetEmptyLocation(vector/loc, radius, densityMask = 1, iterations = 1)
+			if(!myShip) return
 			//this function will find an empty position to put a circle of the given radius
 			var/vector/dest = new(0, 0, loc.z)
 			var/hasCollision = 0

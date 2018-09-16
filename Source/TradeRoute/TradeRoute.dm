@@ -1,7 +1,12 @@
 
+client
+	var
+		tradeRoutes[0]
 
 TradeRoute
 	var
+		name
+
 		HomeIsland/homeDock
 
 		ships[0]
@@ -174,14 +179,24 @@ TradeRoute
 					activeTrader.longDestination = activeTrader.GetEmptyLocation(vec2(homeDock.pX, homeDock.pY), activeTrader.myShip.bigRadius, 1, 5)
 					activeTrader = null
 
+				if(!C)
+					for(C)
+						break
+
 				if(canTrade && hasTrade)
 					//I can trade and I am ready to trade. gogogogo
 					if(gameTime > transTimer)
 						transTimer = gameTime + transDelay
 
 						for(var/i in pickupCargo)
-							var/num = pickupCargo[i]
+							if(cargoSpace <= 0) break
 
+							var/num = pickupCargo[i]
+							if(num > cargoSpace) num = cargoSpace
+
+							cargoSpace -= num
+							activeTrader.myShip.cargo[i] += num
+							C.homebank[i] -= num
 
 			var/finishedTrading = 1
 

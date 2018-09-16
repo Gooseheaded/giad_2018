@@ -2,6 +2,7 @@
 "b" = (/Dock,/turf,/area)
 "c" = (/HomeIsland,/turf,/area)
 "d" = (/turf/Island,/area)
+"e" = (/IslandCollider/nintey{step_x = 26; step_y = 15},/turf,/area)
 
 (1,1,1) = {"
 aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
@@ -38,7 +39,7 @@ aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaacdddddaaaaaaadddaaa
 aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaddddddaaaaaaadddaaa
 aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaddddddaaaaaaddddaaa
 aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaddddddaaaaaaddddaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaadddbaaaaaaaaddddaaa
+aaaaaaaaaaaaaaaaaeaaaaaaaaaaaaadddbaaaaaaaaddddaaa
 aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaadddddaaa
 aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaadddddaaa
 aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaddddddaaa

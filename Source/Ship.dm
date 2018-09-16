@@ -87,6 +87,8 @@ Ship
 			isDocked
 			showCannons = 0
 
+			isPlayer = 0
+
 	New()
 		.=..()
 		CreateShadow()
@@ -422,7 +424,8 @@ Ship
 			for(var/i in cargo)
 				cargo[i] = 0
 			//lose $100
-			client.coins -= 100
+			client.coins -= round(client.coins / 3)
+
 			client.UpdateResourcesHud()
 
 			//teleport me home and wipe my cargo

@@ -28,6 +28,7 @@ proc/DisplayTradingMenu(client/c, Dock/dock)
 		return
 
 	c.myShip.isDocked = 1
+	discoveredPorts |= dock
 
 	//32 x 18
 	var/list/toClear = DisplaySlicedHud(c, 'Assets/HUD.dmi', 11,12, 21,6 ,5)

@@ -1,5 +1,5 @@
 
-proc/DisplaySlicedHud(client/c, icon/icon, topLeftX, topLeftY, bottomRightX, bottomRightY, layer=1)
+proc/DisplaySlicedHud(client/c, icon/icon, topLeftX, topLeftY, bottomRightX, bottomRightY, layer=10)
 	if (c == null)
 		throw EXCEPTION("Client cannot be null.")
 

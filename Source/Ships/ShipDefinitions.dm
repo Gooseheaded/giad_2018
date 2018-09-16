@@ -25,7 +25,7 @@ Ship
 		isHostile = 1
 
 		revSpeedLimit = -15
-		passiveSpeedLimit = 75
+		passiveSpeedLimit = 60
 		windSpeedBonusMult = 40
 
 		maxHealth = 40
@@ -55,6 +55,6 @@ Cannon
 
 		fireDelay = 4
 		fireInaccuracy = 5
-		fireDamage = 7
+		fireDamage = 5
 		range = 250
 		fireArc = 67.5
