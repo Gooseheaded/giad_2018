@@ -11,7 +11,7 @@ client
 		list/resourcesHud = list()
 
 		list/homebank = list()
-		coins = 100000
+		coins = 100
 
 	proc
 		CreateStarterShip()
@@ -19,16 +19,13 @@ client
 
 			if(myShip) del myShip
 
-			world<<"CREATED A NEW SHIP THO"
 
 			myShip = new/Ship/StarterCaravel()
 			myShip.client = src
 
-			myShip.loc = locate(10,10,1)
+			myShip.loc = locate(60,85,1)
 			myShip.PixelCoordsUpdate()
 			myShip.CollidersUpdate()
-
-			world<<"NEW SHIP: '[myShip]'"
 
 			//set the camera
 			camera = new(src, myShip)
@@ -56,76 +53,6 @@ client
 			resourcesHud[MAGENTA_SPICE].maptext = "<b>x[myShip.cargo[MAGENTA_SPICE]]</b>"
 			resourcesHud[BLACK_SPICE].maptext = "<b>x[myShip.cargo[BLACK_SPICE]]</b>"
 			resourcesHud[YELLOW_SPICE].maptext = "<b>x[myShip.cargo[YELLOW_SPICE]]</b>"
-
-	New()
-		src << sound('OceanAmbiance.ogg', volume=10, repeat=1)
-
-		screen += new/Tutorial/A()
-
-		var/obj/blackCounter = new()
-		blackCounter.screen_loc = "NORTH,WEST"
-		blackCounter.icon = 'Spices.dmi'
-		blackCounter.icon_state = BLACK_SPICE
-		blackCounter.maptext_x = 28
-		blackCounter.maptext_width = 60
-		resourcesHud[BLACK_SPICE] = blackCounter
-		screen.Add(blackCounter)
-
-		var/obj/yellowCounter = new()
-		yellowCounter.screen_loc = "NORTH,WEST+2"
-		yellowCounter.icon = 'Spices.dmi'
-		yellowCounter.icon_state = YELLOW_SPICE
-		yellowCounter.maptext_x = 28
-		yellowCounter.maptext_width = 60
-		resourcesHud[YELLOW_SPICE] = yellowCounter
-		screen.Add(yellowCounter)
-
-		var/obj/redCounter = new()
-		redCounter.screen_loc = "NORTH,WEST+4"
-		redCounter.icon = 'Spices.dmi'
-		redCounter.icon_state = RED_SPICE
-		redCounter.maptext_x = 28
-		redCounter.maptext_width = 60
-		resourcesHud[RED_SPICE] = redCounter
-		screen.Add(redCounter)
-
-		var/obj/magentaCounter = new()
-		magentaCounter.screen_loc = "NORTH,WEST+6"
-		magentaCounter.icon = 'Spices.dmi'
-		magentaCounter.icon_state = MAGENTA_SPICE
-		magentaCounter.maptext_x = 28
-		magentaCounter.maptext_width = 60
-		resourcesHud[MAGENTA_SPICE] = magentaCounter
-		screen.Add(magentaCounter)
-
-		var/obj/blueCounter = new()
-		blueCounter.screen_loc = "NORTH,WEST+8"
-		blueCounter.icon = 'Spices.dmi'
-		blueCounter.icon_state = BLUE_SPICE
-		blueCounter.maptext_x = 28
-		blueCounter.maptext_width = 60
-		resourcesHud[BLUE_SPICE] = blueCounter
-		screen.Add(blueCounter)
-
-		var/obj/cyanCounter = new()
-		cyanCounter.screen_loc = "NORTH,WEST+10"
-		cyanCounter.icon = 'Spices.dmi'
-		cyanCounter.icon_state = CYAN_SPICE
-		cyanCounter.maptext_x = 28
-		cyanCounter.maptext_width = 60
-		resourcesHud[CYAN_SPICE] = cyanCounter
-		screen.Add(cyanCounter)
-
-		var/obj/greenCounter = new()
-		greenCounter.screen_loc = "NORTH,WEST+12"
-		greenCounter.icon = 'Spices.dmi'
-		greenCounter.icon_state = GREEN_SPICE
-		greenCounter.maptext_x = 28
-		greenCounter.maptext_width = 60
-		resourcesHud[GREEN_SPICE] = greenCounter
-		screen.Add(greenCounter)
-
-		..()
 
 	verb
 		KeyDown(var/char as text)

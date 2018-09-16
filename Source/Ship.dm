@@ -94,6 +94,14 @@ Ship
 		CreateShadow()
 
 		// Initial loadout
+		cargo[RED_SPICE] = 0
+		cargo[YELLOW_SPICE] = 0
+		cargo[BLUE_SPICE] = 0
+		cargo[CYAN_SPICE] = 0
+		cargo[MAGENTA_SPICE] = 0
+		cargo[GREEN_SPICE] = 0
+		cargo[BLACK_SPICE] = 0
+		/*
 		cargo[RED_SPICE] = rand(10,20)
 		cargo[YELLOW_SPICE] = rand(10,20)
 		cargo[BLUE_SPICE] = rand(10,20)
@@ -101,6 +109,7 @@ Ship
 		cargo[MAGENTA_SPICE] = rand(10,20)
 		cargo[GREEN_SPICE] = rand(10,20)
 		cargo[BLACK_SPICE] = rand(10,20)
+		*/
 
 		for(var/Collider/C in colliders)
 			C.parent = src

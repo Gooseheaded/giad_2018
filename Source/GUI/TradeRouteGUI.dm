@@ -214,15 +214,32 @@ proc
 		traderouteWindow["routeDesc4"] = o
 		c.screen.Add(o)
 
+
+		var/destName = "Not Set"
+		var/TradeNode/N
+		if(selectedRoute.nodes.len > 0)
+			N = selectedRoute.nodes[1]
+			destName = N.dock.name
+
+		o = new()
+		o.screen_loc = "21,12"
+		o.layer = 11
+		o.maptext_width = 400
+		o.maptext_height = 64
+		o.maptext = MAPTEXT_COLOR + "<b><font size=2>Destination Port: [destName]"
+		del traderouteWindow["routeDesc5"]
+		traderouteWindow["routeDesc5"] = o
+		c.screen.Add(o)
+
 		o = new /obj/AddShipButton()
-		o.screen_loc = "21:-10,11"
+		o.screen_loc = "21:-10,9"
 		o.layer = 12
 		del traderouteWindow["routeShipAddButton"]
 		traderouteWindow["routeShipAddButton"] = o
 		c.screen.Add(o)
 
 		o = new /obj/ShipClearButton()
-		o.screen_loc = "24:-10,11"
+		o.screen_loc = "24:-10,9"
 		o.layer = 12
 		del traderouteWindow["routeShipRmvButton"]
 		traderouteWindow["routeShipRmvButton"] = o

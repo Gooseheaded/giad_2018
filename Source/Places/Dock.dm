@@ -36,7 +36,7 @@ Dock
 		maptext_width = 100
 		maptext_x = 0
 		maptext_y = -30
-		maptext = "<b>name"
+		maptext = "<b>[name]"
 
 		pixel_x -= 45
 		pixel_y -= 45
