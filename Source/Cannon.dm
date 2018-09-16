@@ -17,6 +17,8 @@ Cannon
 
 		Ship/parent
 
+		fireSound
+
 	proc
 		FireAt(Ship/target)
 
@@ -37,6 +39,7 @@ Cannon
 
 			var/obj/Cannonball/O = new(parent, fAngle, projSpeed)
 
+			//play the fire sound
 
 			fireTimer = gameTime + fireDelay
 
@@ -51,6 +54,9 @@ obj/Cannonball
 
 		deathTimer = -1
 		deathDelay = 5
+
+		hitSound
+		splashSound
 
 		tmp
 			vector/velocity
@@ -74,6 +80,8 @@ obj/Cannonball
 		LinearStep()
 
 		if(gameTime > deathTimer && deathTimer > 0)
+			new/Wake(src)
+
 			del src
 
 

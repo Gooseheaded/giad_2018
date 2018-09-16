@@ -317,7 +317,7 @@ Wake //this is the wake particle that is emitted by ships
 	var
 		duration = 5
 
-	New(Ship/S)
+	New(atom/movable/S)
 		.=..()
 		icon = S.icon
 		icon_state = "wake"
