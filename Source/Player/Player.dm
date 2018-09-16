@@ -58,7 +58,10 @@ client
 			resourcesHud[YELLOW_SPICE].maptext = "<b>x[myShip.cargo[YELLOW_SPICE]]</b>"
 
 	New()
+		src << sound('OceanAmbiance.ogg', volume=10, repeat=1)
+
 		screen += new/Tutorial/A()
+
 		var/obj/blackCounter = new()
 		blackCounter.screen_loc = "NORTH,WEST"
 		blackCounter.icon = 'Spices.dmi'
