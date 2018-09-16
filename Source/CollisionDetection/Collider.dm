@@ -90,7 +90,7 @@ IslandCollider
 
 	New()
 		.=..()
-		//invisibility = 101
+		invisibility = 101
 
 	icon = 'Colliders.dmi'
 
