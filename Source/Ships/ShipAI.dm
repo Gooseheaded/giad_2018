@@ -1,5 +1,9 @@
 
 
+client
+	var
+		list/myAIs[0]
+
 AI
 	/*
 	the AI actor  behaves like a client, in that it holds a reference to its ship and sends commands to it.

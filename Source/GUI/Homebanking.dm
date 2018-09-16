@@ -69,7 +69,7 @@ proc/DisplayHomebankingMenu(client/c, HomeIsland/home)
 		c.screen.Add(placeholderLeft)
 
 		var/obj/placeholderRight = new()
-		placeholderRight.screen_loc = "16,[12-(screenOffset)]"
+		placeholderRight.screen_loc = "16:5,[12-(screenOffset)]"
 		placeholderRight.icon = 'Spices.dmi'
 		placeholderRight.icon_state = spice
 		placeholderRight.maptext = MAPTEXT_COLOR + "x[c.homebank[spice]]"
@@ -122,6 +122,7 @@ proc/DisplayHomebankingMenu(client/c, HomeIsland/home)
 		toClear.Add(wbtn)
 		c.screen.Add(wbtn)
 
+
 		screenOffset ++
 
 	var/CloseButton/closeBtn = new()
@@ -129,6 +130,28 @@ proc/DisplayHomebankingMenu(client/c, HomeIsland/home)
 	closeBtn.screen_loc = "13,4"
 	closeBtn.layer = 6
 	c.screen.Add(closeBtn)
+	toClear.Add(closeBtn)
+
+
+	var/obj/o = new /obj/BuyTradeShip()
+	o.screen_loc = "24,12"
+	o.layer = 10
+	c.screen.Add(o)
+	toClear.Add(o)
+
+	o = new /obj/BuyEscortShip()
+	o.screen_loc = "24,10"
+	o.layer = 10
+	c.screen.Add(o)
+	toClear.Add(o)
+
+
+	o = new /obj/OpenTradeRoutes()
+	o:clear = toClear
+	o.screen_loc = "24,8"
+	o.layer = 10
+	c.screen.Add(o)
+	toClear.Add(o)
 
 WithdrawButton
 	parent_type = /obj
@@ -141,8 +164,13 @@ WithdrawButton
 
 	Click()
 		if (usr.client.homebank[spice] < 1)
-			displayText("Not enough [spice] to withdraw.")
+			displayText("You don't have enough [spice] to withdraw.")
 			return
+
+		if(usr.client.myShip.GetCurrentCargo() >= usr.client.myShip.cargoCapacity)
+			displayText("You don't have enough cargo space to withdraw.")
+			return
+
 
 		usr.client.homebank[spice] --
 		usr.client.myShip.cargo[spice] ++
@@ -166,8 +194,9 @@ SellButton
 
 	Click()
 		if (usr.client.homebank[spice] < 1)
-			displayText("Not enough [spice] to sell.")
+			world << "Not enough [spice] to sell."
 			return
+
 
 		usr << sound('SellSound.wav', volume=25)
 		usr.client.homebank[spice] --
@@ -194,7 +223,7 @@ DepositButton
 
 	Click()
 		if (usr.client.myShip.cargo[spice] < 1)
-			displayText("Not enough [spice] to deposit.")
+			world << "Not enough [spice] to deposit."
 			return
 
 		usr.client.homebank[spice] ++
@@ -207,3 +236,69 @@ DepositButton
 				o.maptext = MAPTEXT_COLOR + "x[usr.client.myShip.cargo[spice]]"
 
 		usr.client.UpdateResourcesHud()
+
+obj
+	BuyTradeShip
+		icon = 'TradeShip.png'
+		layer = 12
+
+		Click()
+			.=..()
+			if(usr.client.coins < 1000)
+				world << "Not enough coin to buy a trade ship."
+				return
+
+			usr.client.coins -= 1000
+
+			var/HomeIsland/H = locate()
+			H.PixelCoordsUpdate()
+
+			BuyAIShip(usr.client, /Ship/Trader, vec2(H.pX, H.pY), H.z)
+
+	BuyEscortShip
+		icon = 'EscortShip.png'
+		layer = 12
+
+		Click()
+			.=..()
+			if(usr.client.coins < 1000)
+				world << "Not enough coin to buy a escort ship."
+				return
+
+			usr.client.coins -= 1000
+
+			var/HomeIsland/H = locate()
+			H.PixelCoordsUpdate()
+
+			BuyAIShip(usr.client, /Ship/Escort, vec2(H.pX, H.pY), H.z)
+
+	OpenTradeRoutes
+		icon = 'TradeRoutes.png'
+		layer = 12
+		var/clear[0]
+		Click()
+			.=..()
+			var/HomeIsland/h = locate()
+			OpenTradeRouteWindow(usr.client, h)
+			usr.client.myShip.isDocked = 1
+			for(var/i in clear) del i
+
+proc
+	BuyAIShip(client/c, shipType, vector/location, z)
+		var/AI/PlayerAI/AI = new ()
+		AI.myShip = new shipType()
+
+		location = GetEmptyLocation(vec2(location.x, location.y), z, AI.myShip.bigRadius, 1, 3)
+
+		AI.myShip.loc = locate(location.x / ICON_WIDTH,location.y / ICON_HEIGHT,1)
+		AI.myShip.step_x = location.x % ICON_WIDTH
+		AI.myShip.step_y = location.y % ICON_HEIGHT
+
+		AI.myShip.PixelCoordsUpdate()
+		AI.myShip.CollidersUpdate()
+
+		gameActiveAtoms += AI
+		gameActiveAtoms += AI.myShip
+
+		if(c)
+			c.myAIs += AI

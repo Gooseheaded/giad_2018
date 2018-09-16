@@ -11,7 +11,7 @@ client
 		list/resourcesHud = list()
 
 		list/homebank = list()
-		coins = 100
+		coins = 100000
 
 	proc
 		CreateStarterShip()

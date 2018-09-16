@@ -7,6 +7,8 @@ var
 
 	TradeRoute/selectedRoute
 	tradeMenuIndex = 1
+	dockMenuIndex = 1
+	shipMenuIndex = 1
 
 proc
 	OpenTradeRouteWindow(client/c, HomeIsland/home)
@@ -38,14 +40,14 @@ proc
 		o.maptext_width = 400
 		o.maptext_height = 64
 		if (lowertext(copytext(c.key, length(c.key))) == "s")
-			o.maptext = MAPTEXT_COLOR + "<b><font size=4>TRADE ROUTES</font></b>"
+			o.maptext = MAPTEXT_COLOR + "<b><font size=3>TRADE ROUTES</font></b>"
 		else
-			o.maptext = MAPTEXT_COLOR + "<b><font size=4>TRADE ROUTES</font></b>"
+			o.maptext = MAPTEXT_COLOR + "<b><font size=3>TRADE ROUTES</font></b>"
 		traderouteWindow["routeWindowTitle"] = o
 		c.screen.Add(o)
 
 		o = new/obj/CloseTradeRouteWindowbutton()
-		o.screen_loc = "10,1"
+		o.screen_loc = "10,2"
 		o.layer = 14
 		traderouteWindow["routeWindowClose"] = o
 		c.screen.Add(o)
@@ -120,7 +122,7 @@ proc
 			return
 
 		var/obj/o = new()
-		o.screen_loc = "14,14"
+		o.screen_loc = "16,15"
 		o.layer = 11
 		o.maptext_width = 400
 		o.maptext_height = 64
@@ -133,7 +135,7 @@ proc
 		c.screen.Add(o)
 
 		o = new()
-		o.screen_loc = "15,13"
+		o.screen_loc = "15,14"
 		o.layer = 11
 		o.maptext_width = 400
 		o.maptext_height = 64
@@ -150,7 +152,7 @@ proc
 			if(selectedRoute.startCargo[spice]) num = selectedRoute.startCargo[spice]
 
 			var/obj/placeholderLeft = new()
-			placeholderLeft.screen_loc = "14:15,[12-screenOffset]"
+			placeholderLeft.screen_loc = "14:5,[13-screenOffset]"
 			placeholderLeft.icon = 'Spices.dmi'
 			placeholderLeft.icon_state = spice
 			placeholderLeft.maptext = MAPTEXT_COLOR + "x[num]"
@@ -162,7 +164,7 @@ proc
 			c.screen.Add(placeholderLeft)
 
 			var/obj/placeholderRight = new()
-			placeholderRight.screen_loc = "19:5,[12-(screenOffset)]"
+			placeholderRight.screen_loc = "19:-5,[13-(screenOffset)]"
 			placeholderRight.icon = 'Spices.dmi'
 			placeholderRight.icon_state = spice
 			placeholderRight.maptext = MAPTEXT_COLOR + "x[c.homebank[spice]]"
@@ -174,13 +176,13 @@ proc
 			c.screen.Add(placeholderRight)
 
 			var/RouteDepositButton/dbtn = new(spice)
-			dbtn.screen_loc = "17:15,[12-(screenOffset)]"
+			dbtn.screen_loc = "17:5,[13-(screenOffset)]"
 			del traderouteWindow["routeDeposit [spice]"]
 			traderouteWindow["routeDeposit [spice]"] = dbtn
 			c.screen.Add(dbtn)
 
 			var/RouteWithdrawButton/wbtn = new(spice)
-			wbtn.screen_loc = "16:15,[12-(screenOffset)]"
+			wbtn.screen_loc = "16:5,[13-(screenOffset)]"
 			del traderouteWindow["routeWithdraw [spice]"]
 			traderouteWindow["routeWithdraw [spice]"] = wbtn
 			c.screen.Add(wbtn)
@@ -212,6 +214,26 @@ proc
 		traderouteWindow["routeDesc4"] = o
 		c.screen.Add(o)
 
+		o = new /obj/AddShipButton()
+		o.screen_loc = "21:-10,11"
+		o.layer = 12
+		del traderouteWindow["routeShipAddButton"]
+		traderouteWindow["routeShipAddButton"] = o
+		c.screen.Add(o)
+
+		o = new /obj/ShipClearButton()
+		o.screen_loc = "24:-10,11"
+		o.layer = 12
+		del traderouteWindow["routeShipRmvButton"]
+		traderouteWindow["routeShipRmvButton"] = o
+		c.screen.Add(o)
+
+		o = new /obj/AddNodeButton()
+		o.screen_loc = "22,3"
+		o.layer = 12
+		del traderouteWindow["routeNodeButton"]
+		traderouteWindow["routeNodeButton"] = o
+		c.screen.Add(o)
 
 	ClearTradeRouteDetails(tag = "routeDetails")
 		for(var/i in traderouteWindow)
@@ -219,18 +241,172 @@ proc
 			del traderouteWindow[i]
 			traderouteWindow -= i
 
-	TradeRouteAddNode(client/c, listIndex = 1, tag = "nodeMenu")
+	TradeRouteAddNode(client/c, listIndex = dockMenuIndex, tag = "nodeMenu")
+		var/list/toClear = DisplaySlicedHud(c, 'Assets/HUD.dmi', 10,16, 16,3 ,30)
+		for(var/obj/o in toClear)
+			del traderouteWindow["[tag] [o.screen_loc]"]
+			traderouteWindow["[tag] [o.screen_loc]"] = o
+			o.layer = 30
 
-	TradeRouteCloseAddNode(var/tag = "nodeMenu")
+		var/obj/o = new()
+		o.screen_loc = "11,16 : -12"
+		o.layer = 31
+		o.maptext_width = 400
+		o.maptext_height = 64
+		o.maptext = MAPTEXT_COLOR + "<b><font size=3>Select a Port</font></b>"
+		del traderouteWindow["[tag] Title"]
+		traderouteWindow["[tag] Title"] = o
+		c.screen.Add(o)
+
+		o = new()
+		o.screen_loc = "10,5"
+		o.icon = 'Menu.dmi'
+		o.mouse_opacity = 0
+		var/matrix/M = new()
+		M.Translate(45,45)
+		M.Scale( 120 / 90, 270 / 90) //11 tall
+		o.transform = M
+		o.layer = 32
+		del traderouteWindow["[tag] menuback"]
+		traderouteWindow["[tag] menuback"] = o
+		c.screen.Add(o)
+
 		for(var/i in traderouteWindow)
-			if(!findtext(i, tag)) continue
+			if(!findtext(i, "route[tag]Item")) continue
+			del traderouteWindow[i]
+			traderouteWindow -= i
+
+		var/sy = 14
+		var/upperListIndex = listIndex + 6
+		if(upperListIndex > discoveredPorts.len) upperListIndex = discoveredPorts.len
+
+		for(var/i = listIndex; i <= upperListIndex; i++)
+			if(i < 1) i = 1
+			if(discoveredPorts[i] == null) continue;
+
+			o = new/obj/PortSelect()
+			o:item = discoveredPorts[i]
+			o.maptext = "[discoveredPorts[i].name]"
+			o.maptext_width = 100
+			o.screen_loc = "12:-10, [sy--]"
+			o.layer = 33
+			traderouteWindow["route[tag]Item #[i]"] = o
+			c.screen.Add(o)
+
+		o = new/obj/CloseNodeMenuButton()
+		o.screen_loc = "12,4"
+		o.layer = 35
+		del traderouteWindow["[tag] closeButton"]
+		traderouteWindow["[tag] closeButton"] = o
+		c.screen.Add(o)
+
+		o = new/obj/RouteNodeNext()
+		o.screen_loc = "14,5"
+		o.layer = 35
+		del traderouteWindow["[tag] Next"]
+		traderouteWindow["[tag] Next"] = o
+		c.screen.Add(o)
+
+		o = new/obj/RouteNodePrev()
+		o.screen_loc = "12,5"
+		o.layer = 35
+		del traderouteWindow["[tag] Prev"]
+		traderouteWindow["[tag] Prev"] = o
+		c.screen.Add(o)
+
+
+	TradeRouteRemoveNode(client/c, listIndex = dockMenuIndex, ntag = "nodeMenu")
+
+	TradeRouteCloseAddNode(ntag = "nodeMenu")
+		for(var/i in traderouteWindow)
+			if(!findtext(i, ntag)) continue
+
 			del traderouteWindow[i]
 			traderouteWindow -= i
 
 	TradeRouteAddShipMenu(client/c, listIndex = 1, tag = "shipMenu")
+		var/list/toClear = DisplaySlicedHud(c, 'Assets/HUD.dmi', 10,16, 16,3 ,30)
+		for(var/obj/o in toClear)
+			del traderouteWindow["[tag] [o.screen_loc]"]
+			traderouteWindow["[tag] [o.screen_loc]"] = o
+			o.layer = 30
 
+		var/obj/o = new()
+		o.screen_loc = "11,16 : -12"
+		o.layer = 31
+		o.maptext_width = 400
+		o.maptext_height = 64
+		o.maptext = MAPTEXT_COLOR + "<b><font size=3>Select a Ship</font></b>"
+		del traderouteWindow["[tag] Title"]
+		traderouteWindow["[tag] Title"] = o
+		c.screen.Add(o)
 
-	TradeRouteRemoveShipMenu(client/c, listIndex = 1, tag = "shipMenu")
+		o = new()
+		o.screen_loc = "10,5"
+		o.icon = 'Menu.dmi'
+		o.mouse_opacity = 0
+		var/matrix/M = new()
+		M.Translate(45,45)
+		M.Scale( 120 / 90, 270 / 90) //11 tall
+		o.transform = M
+		o.layer = 32
+		del traderouteWindow["[tag] menuback"]
+		traderouteWindow["[tag] menuback"] = o
+		c.screen.Add(o)
+
+		for(var/i in traderouteWindow)
+			if(!findtext(i, "route[tag]Item")) continue
+			del traderouteWindow[i]
+			traderouteWindow -= i
+
+		var/sy = 14
+		var/shipsList[] = c.myAIs - selectedRoute.ais
+		var/upperListIndex = listIndex + 6
+		if(upperListIndex > shipsList.len) upperListIndex = shipsList.len
+
+		if(listIndex > shipsList.len) listIndex = shipsList.len
+		if(listIndex < 1) listIndex = 1
+
+		for(var/i = listIndex; i <= upperListIndex; i++)
+			if(i < 1) i = 1
+			if(shipsList[i] == null) continue;
+
+			o = new/obj/ShipAddSelect()
+			o:item = shipsList[i]
+			o.maptext = "[ shipsList[i].myShip.name] #[i]"
+			o.maptext_width = 100
+			o.screen_loc = "12:-10, [sy--]"
+			o.layer = 33
+			traderouteWindow["route[tag]Item #[i]"] = o
+			c.screen.Add(o)
+
+		o = new/obj/CloseShipMenuButton()
+		o.screen_loc = "12,4"
+		o.layer = 35
+		del traderouteWindow["[tag] closeButton"]
+		traderouteWindow["[tag] closeButton"] = o
+		c.screen.Add(o)
+
+		o = new/obj/RouteShipNext()
+		o.screen_loc = "14,5"
+		o.layer = 35
+		del traderouteWindow["[tag] Next"]
+		traderouteWindow["[tag] Next"] = o
+		c.screen.Add(o)
+
+		o = new/obj/RouteShipPrev()
+		o.screen_loc = "12,5"
+		o.layer = 35
+		del traderouteWindow["[tag] Prev"]
+		traderouteWindow["[tag] Prev"] = o
+		c.screen.Add(o)
+
+	TradeRouteCloseAddShip(ntag = "shipMenu")
+		for(var/i in traderouteWindow)
+			if(!findtext(i, ntag)) continue
+
+			del traderouteWindow[i]
+			traderouteWindow -= i
 
 
 
@@ -263,6 +439,12 @@ obj
 			CloseTradeRouteWindow(usr.client)
 			del src
 
+	CloseShipMenuButton
+		icon = 'CloseButton.png'
+		Click()
+			.=..()
+			TradeRouteCloseAddShip()
+
 	RouteMenuNext
 		icon = 'RightArrowButton.png'
 		layer = 12
@@ -285,6 +467,52 @@ obj
 				tradeMenuIndex = 1
 			ShowTradeRouteMenu(usr.client)
 
+	RouteNodeNext
+		icon = 'RightArrowButton.png'
+		layer = 12
+		Click()
+			.=..()
+			dockMenuIndex += 5
+			if(dockMenuIndex >= discoveredPorts.len)
+				dockMenuIndex = discoveredPorts.len - 1
+
+			if(dockMenuIndex < 1) dockMenuIndex = 1
+			TradeRouteAddNode(usr.client)
+
+
+	RouteNodePrev
+		icon = 'LeftArrowButton.png'
+		layer = 12
+		Click()
+			.=..()
+			dockMenuIndex -= 5
+			if(dockMenuIndex <= 0)
+				dockMenuIndex = 1
+			TradeRouteAddNode(usr.client)
+
+	RouteShipNext
+		icon = 'RightArrowButton.png'
+		layer = 12
+		Click()
+			.=..()
+			shipMenuIndex += 5
+			if(shipMenuIndex >= usr.client.myAIs.len)
+				shipMenuIndex = usr.client.myAIs.len - 1
+
+			if(shipMenuIndex < 1) shipMenuIndex = 1
+			TradeRouteAddShipMenu(usr.client)
+
+
+	RouteShipPrev
+		icon = 'LeftArrowButton.png'
+		layer = 12
+		Click()
+			.=..()
+			shipMenuIndex -= 5
+			if(shipMenuIndex <= 0)
+				shipMenuIndex = 1
+			TradeRouteAddShipMenu(usr.client)
+
 	RouteSelect
 		icon = 'Route.dmi'
 		icon_state = "small"
@@ -299,6 +527,56 @@ obj
 			selectedRoute = item
 			ShowTradeRouteMenu(usr.client)
 
+	PortSelect
+		icon = 'PortIcon.dmi'
+		icon_state = "small"
+		maptext_width = 120
+		maptext_height = 30
+		maptext_x = 30
+
+		var/Dock/item
+
+		Click()
+			.=..()
+			if(!selectedRoute) return
+
+			var/TradeNode/node = new()
+			node.dock = item
+
+			selectedRoute.nodes.len = 1
+			selectedRoute.nodes += node
+			TradeRouteCloseAddNode()
+			ShowTradeRouteDetails(usr.client)
+
+	ShipAddSelect
+		icon = 'ShipIcon.dmi'
+		icon_state = "small"
+		maptext_width = 120
+		maptext_height = 30
+		maptext_x = 30
+
+		var/AI/item
+
+		Click()
+			.=..()
+			if(!selectedRoute) return
+			if(!item) return
+
+			selectedRoute.ais |= item
+			selectedRoute.ships |= item:myShip
+			TradeRouteCloseAddShip()
+			ShowTradeRouteDetails(usr.client)
+
+	ShipClearButton
+		icon = 'RemoveShips.png'
+		Click()
+			.=..()
+			if(!selectedRoute) return
+
+			selectedRoute.ais.Cut()
+			selectedRoute.ships.Cut()
+			ShowTradeRouteDetails(usr.client)
+
 	AddRouteButton
 		icon = 'NewRoute.png'
 		layer = 13
@@ -308,6 +586,30 @@ obj
 			var/TradeRoute/route = new()
 			usr.client.tradeRoutes += route
 			ShowTradeRouteMenu(usr.client)
+
+	AddNodeButton
+		icon = 'SelectPort.png'
+		layer = 15
+
+		Click()
+			.=..()
+			TradeRouteAddNode(usr.client)
+
+	AddShipButton
+		icon = 'AddShip.png'
+		layer = 15
+
+		Click()
+			.=..()
+			TradeRouteAddShipMenu(usr.client)
+
+	CloseNodeMenuButton
+		icon = 'Closebutton.png'
+		layer = 25
+		Click()
+			.=..()
+			TradeRouteCloseAddNode()
+
 
 RouteWithdrawButton
 	parent_type = /obj
