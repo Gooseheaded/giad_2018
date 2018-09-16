@@ -430,6 +430,15 @@ Ship
 			health = maxHealth
 			isDocked = 0
 
+			var/HomeIsland/H = locate() in world
+			loc = H
+			step_x = 0
+			step_y = 0
+
+			PixelCoordsUpdate()
+			CollidersUpdate()
+
+
 
 		Repair()
 			health = maxHealth

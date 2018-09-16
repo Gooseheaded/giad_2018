@@ -13,7 +13,7 @@ Cannon
 		fireDamage = 10
 
 		fireInaccuracy = 3
-		range = 400
+		range = 500
 
 		projSpeed = 300
 
@@ -74,23 +74,6 @@ Cannon
 			return
 
 
-	Basic
-		name = "Basic Cannon"
-		fireDelay = 3
-		fireInaccuracy = 2
-		fireDamage = 10
-		fireArc = 45
-		range = 400
-
-	Pirate
-		name = "Pirate Cannon"
-
-		fireDelay = 4
-		fireInaccuracy = 5
-		fireDamage = 10
-		range = 250
-		fireArc = 67.5
-
 
 
 obj/Cannonball
@@ -133,7 +116,7 @@ obj/Cannonball
 		velocity = vec2(speed * cos(angle), speed * sin(angle))
 		velocity = velocity.add(s.velocity)
 
-		filters = filter(type="motion_blur", velocity.x / 2, velocity.y / 2)
+		filters = filter(type="motion_blur", round(velocity.x), round(velocity.y))
 
 		gameActiveAtoms += src
 
