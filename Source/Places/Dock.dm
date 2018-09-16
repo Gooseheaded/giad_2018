@@ -8,8 +8,7 @@ TradeOffer
 
 Dock
 	parent_type = /obj
-	icon = 'Placeholders.dmi'
-	icon_state = "Dock"
+	icon = 'DockingArea.png'
 
 	var
 		list/offers = list()
@@ -21,9 +20,8 @@ Dock
 
 		name = pick(dockNames - duplicates)
 
-		icon = 'Dock.png'
-		pixel_x -= 62
-		pixel_y -= 53
+		pixel_x -= 45
+		pixel_y -= 45
 
 	Click()
 		DisplayTradingMenu(usr.client, src)
