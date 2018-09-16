@@ -80,6 +80,7 @@ proc
 
 			RandomWorldEventLoop()
 			BasicResourceGeneratorLoop()
+			TextUpdateLoop()
 
 
 

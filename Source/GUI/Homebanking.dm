@@ -141,7 +141,7 @@ WithdrawButton
 
 	Click()
 		if (usr.client.homebank[spice] < 1)
-			world << "Not enough [spice] to withdraw."
+			displayText("Not enough [spice] to withdraw.")
 			return
 
 		usr.client.homebank[spice] --
@@ -166,7 +166,7 @@ SellButton
 
 	Click()
 		if (usr.client.homebank[spice] < 1)
-			world << "Not enough [spice] to sell."
+			displayText("Not enough [spice] to sell.")
 			return
 
 		usr << sound('SellSound.wav', volume=25)
@@ -194,7 +194,7 @@ DepositButton
 
 	Click()
 		if (usr.client.myShip.cargo[spice] < 1)
-			world << "Not enough [spice] to deposit."
+			displayText("Not enough [spice] to deposit.")
 			return
 
 		usr.client.homebank[spice] ++

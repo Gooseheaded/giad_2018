@@ -26,7 +26,7 @@ proc
 			for (var/output in spices)
 				if (input == output) continue
 				if (tradeUpTable[spices.Find(input)][spices.Find(output)] == 0) continue
-				//world << "[tradeUpTable[spices.Find(input)][spices.Find(output)]] [input] are required to get 1 [output]"
+				//displayText()"[tradeUpTable[spices.Find(input)][spices.Find(output)]] [input] are required to get 1 [output]"
 
 	BuildTradeDownTable()
 		var/list/spices = list(BLACK_SPICE, YELLOW_SPICE, RED_SPICE, MAGENTA_SPICE, BLUE_SPICE, CYAN_SPICE, GREEN_SPICE)
@@ -50,7 +50,7 @@ proc
 			for (var/output in spices)
 				if (input == output) continue
 				if (tradeUpTable[spices.Find(input)][spices.Find(output)] == 0) continue
-				//world << "1 [output] yields [tradeUpTable[spices.Find(input)][spices.Find(output)]] [input]"
+				//displayText()"1 [output] yields [tradeUpTable[spices.Find(input)][spices.Find(output)]] [input]"
 
 	tradingFunction(inputSpice, outputSpice)
 		if (inputSpice == null)

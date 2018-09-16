@@ -28,7 +28,7 @@ proc
 		randomEventLoop = TRUE
 
 		spawn while(TRUE)
-			var/option = 1//rand(1,3)
+			var/option = rand(1,3)
 			if (option == 1)
 				RoyalTax()
 			else if (option == 2)
@@ -43,7 +43,7 @@ proc
 		var/spice = pick(spices)
 		var/taxAmount = max(5, round(rand(1, 300) / spices.Find(spice)))
 
-		world << "The Royal family demands tribute. Have at least x[taxAmount] [spice] deposited at home soon, or suffer the consequences!"
+		displayText("The Royal family demands tribute. Have at least [taxAmount] <font color=[spice]>O</font> deposited at home soon, or suffer the consequences!")
 		spawn(60 * 10)
 			var/client/c = null
 			for(var/client/x)
@@ -51,10 +51,10 @@ proc
 				break
 			if (c != null)
 				if (c.homebank[spice] >= taxAmount)
-					world << "The Royal guard collects taxes you fairly, troubling you no more."
+					displayText("The Royal guard collects taxes you fairly, troubling you no more.")
 					c.homebank[spice] -= taxAmount
 				else
-					world << "The Royal guard does not hear your excuses. All your spices are taxed."
+					displayText("The Royal guard does not hear your excuses. All your spices are taxed.")
 					for(var/x in spices)
 						c.homebank[x] = round(c.homebank[x] * (2 / 3))
 
@@ -66,7 +66,7 @@ proc
 	RefreshDockOffers()
 		for(var/Dock/d)
 			d.GenerateOffers()
-		world << "The market has radically changed! All docks have refreshed their offers!"
+		displayText("The market has radically changed! All docks have refreshed their offers!")
 
 	PirateAttack()
 		var/offScreenDistance = 32 * world.icon_size // 32 tiles, 30 px in size
@@ -84,7 +84,7 @@ proc
 
 		var/pirateName = pick(pirateNames)
 
-		world << "Beware! [pirateName] and their crew are after your head! ([result.toString()])"
+		displayText("Beware! [pirateName] and their crew are after your head! ([result.toString()])")
 		SpawnPirates(result, rand(1,3))
 
 var/list/pirateNames = list("Goodman 'Black Eyes' Stanton",
