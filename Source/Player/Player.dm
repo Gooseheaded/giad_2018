@@ -58,6 +58,7 @@ client
 			resourcesHud[YELLOW_SPICE].maptext = "<b>x[myShip.cargo[YELLOW_SPICE]]</b>"
 
 	New()
+		screen += new/Tutorial/A()
 		var/obj/blackCounter = new()
 		blackCounter.screen_loc = "NORTH,WEST"
 		blackCounter.icon = 'Spices.dmi'

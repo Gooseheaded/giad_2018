@@ -29,7 +29,7 @@ proc
 		randomEventLoop = TRUE
 
 		spawn while(TRUE)
-			var/option = rand(1,4)
+			var/option = 3//rand(1,4)
 			if (option == 1)
 				RoyalTax()
 			else if (option == 2)
@@ -39,12 +39,12 @@ proc
 			else if (option == 4)
 				BoomingEconomy()
 
-			sleep(150 * 10)
+			sleep(3 * 10)
 			years ++
 			displayText("This is year [years]. There [10 - years != 1 ? "are" : "is"] [10 - years] year[10 - years != 1 ? "s" : ""] left in your campaign.")
 			if (years == 10)
 				displayText("Your campaign ends soon! Sell as much as you can, as soon as possible!")
-			sleep(150 * 10)
+			sleep(3 * 10)
 			if (years == 10)
 				displayText("Your campaign has ended!")
 				gamePaused = TRUE
