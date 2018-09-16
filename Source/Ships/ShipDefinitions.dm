@@ -6,7 +6,7 @@ Ship
 		icon_state = "ship"
 
 		revSpeedLimit = -15
-		passiveSpeedLimit = 50
+		passiveSpeedLimit = 60
 		windSpeedBonusMult = 20
 
 		//rotation speeds are in units of "degrees per second"
@@ -46,7 +46,7 @@ Ship
 		isHostile = 1
 
 		revSpeedLimit = -15
-		passiveSpeedLimit = 60
+		passiveSpeedLimit = 70
 		windSpeedBonusMult = 40
 
 		maxHealth = 40
@@ -68,7 +68,7 @@ Ship
 		icon_state = "ship"
 
 		revSpeedLimit = -15
-		passiveSpeedLimit = 60
+		passiveSpeedLimit = 50
 		windSpeedBonusMult = 40
 
 		maxHealth = 40
@@ -77,7 +77,7 @@ Ship
 		cargoCapacity = 300
 
 		//rotation speeds are in units of "degrees per second"
-		rotationSpeedLimit = 80
+		rotationSpeedLimit = 60
 
 		colliders = list(new/Collider(new/vector(0,0,0), new/vector(0,0,0), 10, 1), \
 							new/Collider(new/vector(11,0,0), new/vector(0,0,0), 9, 1), \
@@ -88,7 +88,7 @@ Ship
 		icon_state = "ship"
 
 		revSpeedLimit = -15
-		passiveSpeedLimit = 60
+		passiveSpeedLimit = 50
 		windSpeedBonusMult = 40
 
 		maxHealth = 100
@@ -97,7 +97,7 @@ Ship
 		cargoCapacity = 00
 
 		//rotation speeds are in units of "degrees per second"
-		rotationSpeedLimit = 80
+		rotationSpeedLimit = 60
 
 		colliders = list(new/Collider(new/vector(0,0,0), new/vector(0,0,0), 10, 1), \
 							new/Collider(new/vector(11,0,0), new/vector(0,0,0), 9, 1), \

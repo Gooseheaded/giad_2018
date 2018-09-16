@@ -561,9 +561,11 @@ obj
 			node.dock = item
 
 			selectedRoute.nodes.len = 1
-			selectedRoute.nodes += node
+			selectedRoute.nodes[1] = node
 			TradeRouteCloseAddNode()
 			ShowTradeRouteDetails(usr.client)
+
+			selectedRoute.Start()
 
 	ShipAddSelect
 		icon = 'ShipIcon.dmi'

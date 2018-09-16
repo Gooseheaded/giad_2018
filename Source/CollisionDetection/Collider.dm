@@ -102,15 +102,16 @@ IslandCollider
 	sixty
 		icon_state = "60"
 		radius = 30
-		pixel_x = -30
-		pixel_y = -30
+		pixel_x = -45
+		pixel_y = -45
 	thirty
 		icon_state = "30"
 		radius = 15
-		pixel_x = -15
-		pixel_y = -15
+		pixel_x = -45
+		pixel_y = -45
+
 	fifteen
 		icon_state = "10"
 		radius = 5
-		pixel_x = -5
-		pixel_y = -5
+		pixel_x = -45
+		pixel_y = -45

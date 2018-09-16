@@ -142,6 +142,7 @@ client
 		blackCounter.icon_state = BLACK_SPICE
 		blackCounter.maptext_x = 28
 		blackCounter.maptext_width = 60
+		blackCounter.layer = 50
 		resourcesHud[BLACK_SPICE] = blackCounter
 		screen.Add(blackCounter)
 
@@ -151,6 +152,7 @@ client
 		yellowCounter.icon_state = YELLOW_SPICE
 		yellowCounter.maptext_x = 28
 		yellowCounter.maptext_width = 60
+		yellowCounter.layer = 50
 		resourcesHud[YELLOW_SPICE] = yellowCounter
 		screen.Add(yellowCounter)
 
@@ -160,6 +162,7 @@ client
 		redCounter.icon_state = RED_SPICE
 		redCounter.maptext_x = 28
 		redCounter.maptext_width = 60
+		redCounter.layer = 50
 		resourcesHud[RED_SPICE] = redCounter
 		screen.Add(redCounter)
 
@@ -169,6 +172,7 @@ client
 		magentaCounter.icon_state = MAGENTA_SPICE
 		magentaCounter.maptext_x = 28
 		magentaCounter.maptext_width = 60
+		magentaCounter.layer = 50
 		resourcesHud[MAGENTA_SPICE] = magentaCounter
 		screen.Add(magentaCounter)
 
@@ -178,6 +182,7 @@ client
 		blueCounter.icon_state = BLUE_SPICE
 		blueCounter.maptext_x = 28
 		blueCounter.maptext_width = 60
+		blueCounter.layer = 50
 		resourcesHud[BLUE_SPICE] = blueCounter
 		screen.Add(blueCounter)
 
@@ -187,6 +192,7 @@ client
 		cyanCounter.icon_state = CYAN_SPICE
 		cyanCounter.maptext_x = 28
 		cyanCounter.maptext_width = 60
+		cyanCounter.layer = 50
 		resourcesHud[CYAN_SPICE] = cyanCounter
 		screen.Add(cyanCounter)
 
@@ -196,8 +202,11 @@ client
 		greenCounter.icon_state = GREEN_SPICE
 		greenCounter.maptext_x = 28
 		greenCounter.maptext_width = 60
+		greenCounter.layer = 50
 		resourcesHud[GREEN_SPICE] = greenCounter
 		screen.Add(greenCounter)
+
+		screen.Add( new/obj/MapHudButton/ ())
 
 		spawn(5)
 
