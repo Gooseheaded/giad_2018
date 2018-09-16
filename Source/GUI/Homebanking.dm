@@ -27,9 +27,9 @@ proc/DisplayHomebankingMenu(client/c, HomeIsland/home)
 	windowTitle.maptext_width = 400
 	windowTitle.maptext_height = 64
 	if (lowertext(copytext(c.key, length(c.key))) == "s")
-		windowTitle.maptext = "<b><font size=4>[c.key]' home island</font></b>"
+		windowTitle.maptext = MAPTEXT_COLOR + "<b><font size=4>[c.key]' home island</font></b>"
 	else
-		windowTitle.maptext = "<b><font size=4>[c.key]'s home island</font></b>"
+		windowTitle.maptext = MAPTEXT_COLOR + "<b><font size=4>[c.key]'s home island</font></b>"
 	toClear.Add(windowTitle)
 	c.screen.Add(windowTitle)
 
@@ -38,7 +38,7 @@ proc/DisplayHomebankingMenu(client/c, HomeIsland/home)
 	shipTitle.layer = 6
 	shipTitle.maptext_width = 256
 	shipTitle.maptext_height = 64
-	shipTitle.maptext = "<b>Ship cargo</b>"
+	shipTitle.maptext = MAPTEXT_COLOR + "<b>Ship cargo</b>"
 	toClear.Add(shipTitle)
 	c.screen.Add(shipTitle)
 
@@ -47,7 +47,7 @@ proc/DisplayHomebankingMenu(client/c, HomeIsland/home)
 	bankTitle.layer = 6
 	bankTitle.maptext_width = 256
 	bankTitle.maptext_height = 64
-	bankTitle.maptext = "<b>Home bank</b>"
+	bankTitle.maptext = MAPTEXT_COLOR + "<b>Home bank</b>"
 	toClear.Add(bankTitle)
 	c.screen.Add(bankTitle)
 
@@ -58,7 +58,7 @@ proc/DisplayHomebankingMenu(client/c, HomeIsland/home)
 		placeholderLeft.screen_loc = "11:15,[12-screenOffset]"
 		placeholderLeft.icon = 'Spices.dmi'
 		placeholderLeft.icon_state = spice
-		placeholderLeft.maptext = "x[c.myShip.cargo[spice]]"
+		placeholderLeft.maptext = MAPTEXT_COLOR + "x[c.myShip.cargo[spice]]"
 		placeholderLeft.maptext_x = 28
 		placeholderLeft.layer = 6
 		placeholderLeft.name = "Cargo [spice]"
@@ -69,7 +69,7 @@ proc/DisplayHomebankingMenu(client/c, HomeIsland/home)
 		placeholderRight.screen_loc = "16:5,[12-(screenOffset)]"
 		placeholderRight.icon = 'Spices.dmi'
 		placeholderRight.icon_state = spice
-		placeholderRight.maptext = "x[c.homebank[spice]]"
+		placeholderRight.maptext = MAPTEXT_COLOR + "x[c.homebank[spice]]"
 		placeholderRight.maptext_x = 28
 		placeholderRight.layer = 6
 		placeholderRight.name = "Homebank [spice]"
@@ -82,7 +82,7 @@ proc/DisplayHomebankingMenu(client/c, HomeIsland/home)
 		placeholderPrice.screen_loc = "18:-10,[12-(screenOffset)]"
 		placeholderPrice.maptext_width = 200
 		placeholderPrice.maptext_height = 60
-		placeholderPrice.maptext = "[rand(50,150)] each" // TODO: Market price
+		placeholderPrice.maptext = MAPTEXT_COLOR + "[rand(50,150)] each" // TODO: Market price
 		placeholderPrice.maptext_y = 6
 		placeholderPrice.maptext_x = 24
 		placeholderPrice.layer = 6
@@ -96,7 +96,7 @@ proc/DisplayHomebankingMenu(client/c, HomeIsland/home)
 		placeholderCoin.screen_loc = "18,4"
 		placeholderCoin.maptext_width = 200
 		placeholderCoin.maptext_height = 60
-		placeholderCoin.maptext = "<font size=3><b>[c.coins]"
+		placeholderCoin.maptext = MAPTEXT_COLOR + "<font size=3><b>[c.coins]"
 		placeholderCoin.maptext_y = 6
 		placeholderCoin.maptext_x = 30
 		placeholderCoin.layer = 6
@@ -146,9 +146,9 @@ WithdrawButton
 
 		for(var/obj/o in usr.client.screen)
 			if (o.name == "Homebank [spice]")
-				o.maptext = "x[usr.client.homebank[spice]]"
+				o.maptext = MAPTEXT_COLOR + "x[usr.client.homebank[spice]]"
 			else if(o.name == "Cargo [spice]")
-				o.maptext = "x[usr.client.myShip.cargo[spice]]"
+				o.maptext = MAPTEXT_COLOR + "x[usr.client.myShip.cargo[spice]]"
 
 		usr.client.UpdateResourcesHud()
 
@@ -172,11 +172,11 @@ SellButton
 
 		for(var/obj/o in usr.client.screen)
 			if (o.name == "Homebank [spice]")
-				o.maptext = "x[usr.client.homebank[spice]]"
+				o.maptext = MAPTEXT_COLOR + "x[usr.client.homebank[spice]]"
 			else if(o.name == "Cargo [spice]")
-				o.maptext = "x[usr.client.myShip.cargo[spice]]"
+				o.maptext = MAPTEXT_COLOR + "x[usr.client.myShip.cargo[spice]]"
 			else if(o.name == "Coin")
-				o.maptext = "<font size=3><b>[usr.client.coins]"
+				o.maptext = MAPTEXT_COLOR + "<font size=3><b>[usr.client.coins]"
 
 		usr.client.UpdateResourcesHud()
 
@@ -199,8 +199,8 @@ DepositButton
 
 		for(var/obj/o in usr.client.screen)
 			if (o.name == "Homebank [spice]")
-				o.maptext = "x[usr.client.homebank[spice]]"
+				o.maptext = MAPTEXT_COLOR + "x[usr.client.homebank[spice]]"
 			else if(o.name == "Cargo [spice]")
-				o.maptext = "x[usr.client.myShip.cargo[spice]]"
+				o.maptext = MAPTEXT_COLOR + "x[usr.client.myShip.cargo[spice]]"
 
 		usr.client.UpdateResourcesHud()

@@ -10,6 +10,8 @@
 #define GREEN_SPICE "Green"
 #define BLACK_SPICE "Black"
 
+#define MAPTEXT_COLOR "<font color=black>"
+
 #ifdef DEBUGPRINT
 #define _DEBUGPRINT(text)  world.log<<text
 #else

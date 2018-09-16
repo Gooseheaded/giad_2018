@@ -35,7 +35,7 @@ proc/DisplayTradingMenu(client/c, Dock/dock)
 	windowTitle.layer = 6
 	windowTitle.maptext_width = 256
 	windowTitle.maptext_height = 64
-	windowTitle.maptext = "<b><font size=4>[dock.name]</font></b>"
+	windowTitle.maptext = MAPTEXT_COLOR + "<b><font size=4>[dock.name]</font></b>"
 
 	toClear.Add(windowTitle)
 	c.screen.Add(windowTitle)
@@ -48,7 +48,7 @@ proc/DisplayTradingMenu(client/c, Dock/dock)
 		placeholderIn.screen_loc = "12,[9+(screenOffset)][pixelOffset]"
 		placeholderIn.icon = 'Spices.dmi'
 		placeholderIn.icon_state = offer.inputProduct
-		placeholderIn.maptext = "x[offer.inputAmount]"
+		placeholderIn.maptext = MAPTEXT_COLOR + "x[offer.inputAmount]"
 		placeholderIn.maptext_x = 28
 		placeholderIn.layer = 6
 		toClear.Add(placeholderIn)
@@ -56,7 +56,7 @@ proc/DisplayTradingMenu(client/c, Dock/dock)
 
 		var/obj/placeholderFor = new()
 		placeholderFor.screen_loc = "14,[9+(screenOffset)][pixelOffset]"
-		placeholderFor.maptext = "<b>for</b>"
+		placeholderFor.maptext = MAPTEXT_COLOR + "<b>for</b>"
 		placeholderFor.maptext_y = 5
 		placeholderFor.maptext_x = -5
 		placeholderFor.layer = 6
@@ -67,7 +67,7 @@ proc/DisplayTradingMenu(client/c, Dock/dock)
 		placeholderOut.screen_loc = "15,[9+(screenOffset)][pixelOffset]"
 		placeholderOut.icon = 'Spices.dmi'
 		placeholderOut.icon_state = offer.outputProduct
-		placeholderOut.maptext = "x[offer.outputAmount]"
+		placeholderOut.maptext = MAPTEXT_COLOR + "x[offer.outputAmount]"
 		placeholderOut.maptext_x = 28
 		placeholderOut.layer = 6
 		toClear.Add(placeholderOut)
