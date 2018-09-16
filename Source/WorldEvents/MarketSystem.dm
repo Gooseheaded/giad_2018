@@ -2,6 +2,7 @@
 var
 	tradeUpTable[7][7]
 	tradeDownTable[7][7]
+	boomingEconomy = null
 
 proc
 	BuildTradeUpTable()
@@ -87,5 +88,8 @@ proc
 		var/inIndex = spices.Find(inputSpice)
 		if (inIndex == 0)
 			throw EXCEPTION("inputSpice must be one of the 7 support spices.")
+
+		if (inputSpice == boomingEconomy)
+			return round(3 ** inIndex) * 2
 
 		return round(3 ** inIndex)

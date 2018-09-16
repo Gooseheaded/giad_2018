@@ -28,13 +28,15 @@ proc
 		randomEventLoop = TRUE
 
 		spawn while(TRUE)
-			var/option = rand(1,3)
+			var/option = 4//rand(1,4)
 			if (option == 1)
 				RoyalTax()
 			else if (option == 2)
 				RefreshDockOffers()
-			else if (option == 23)
+			else if (option == 3)
 				PirateAttack()
+			else if (option == 4)
+				BoomingEconomy()
 
 			sleep(300 * 10)
 
@@ -86,6 +88,29 @@ proc
 
 		displayText("Beware! [pirateName] and their crew are after your head! ([result.toString()])")
 		SpawnPirates(result, rand(1,3))
+
+	BoomingEconomy()
+		var/list/spices = list(BLACK_SPICE, YELLOW_SPICE, RED_SPICE, MAGENTA_SPICE, BLUE_SPICE, CYAN_SPICE, GREEN_SPICE)
+		var/spice = pick(spices)
+
+		displayText("The economy booms! For a short time, all <font color=[spice]>O</font> can be sold for twice their normal price!")
+		boomingEconomy = spice
+
+		for(var/x in spices)
+			for(var/client/c)
+				for(var/obj/o in c.screen)
+					if (o.name == "Price [spice]")
+						o.maptext = MAPTEXT_COLOR + "[sellingFunction(spice)] each"
+
+		spawn(60 * 10)
+			displayText("The economy stabilizies once again, and <font color=[spice]>O</font> returns to their normal price.")
+			boomingEconomy = null
+
+			for(var/x in spices)
+				for(var/client/c)
+					for(var/obj/o in c.screen)
+						if (o.name == "Price [spice]")
+							o.maptext = MAPTEXT_COLOR + "[sellingFunction(spice)] each"
 
 var/list/pirateNames = list("Goodman 'Black Eyes' Stanton",
 	"Clive 'Subtle' Chalice",
