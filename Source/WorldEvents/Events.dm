@@ -89,6 +89,8 @@ proc
 			c = x
 			break
 
+		if(!c.myShip) return
+
 		var/vector/start = vec2(c.myShip.x * world.icon_size, c.myShip.y * world.icon_size)
 		var/vector/target = vec2(world.maxx / 2 * world.icon_size, world.maxy / 2 * world.icon_size)
 		var/vector/delta = vec2(target.x - start.x, target.y - start.y).unit().multiply(offScreenDistance)

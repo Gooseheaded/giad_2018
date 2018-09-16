@@ -12,7 +12,7 @@ Ship
 		//rotation speeds are in units of "degrees per second"
 		rotationSpeedLimit = 40
 
-		cargoCapacity = 10
+		cargoCapacity = 150
 
 		colliders = list(new/Collider(new/vector(0,0,0), new/vector(0,0,0), 13, 1), \
 							new/Collider(new/vector(20,0,0), new/vector(0,0,0), 8, 1), \
@@ -28,7 +28,7 @@ Ship
 		passiveSpeedLimit = 50
 		windSpeedBonusMult = 20
 
-		cargoCapacity = 10
+		cargoCapacity = 150
 
 		//rotation speeds are in units of "degrees per second"
 		rotationSpeedLimit = 40
@@ -52,7 +52,7 @@ Ship
 		maxHealth = 40
 		health = 40
 
-		cargoCapacity = 0
+		cargoCapacity = 00
 
 		//rotation speeds are in units of "degrees per second"
 		rotationSpeedLimit = 80
@@ -74,7 +74,7 @@ Ship
 		maxHealth = 40
 		health = 40
 
-		cargoCapacity = 20
+		cargoCapacity = 300
 
 		//rotation speeds are in units of "degrees per second"
 		rotationSpeedLimit = 80
@@ -94,7 +94,7 @@ Ship
 		maxHealth = 100
 		health = 100
 
-		cargoCapacity = 0
+		cargoCapacity = 00
 
 		//rotation speeds are in units of "degrees per second"
 		rotationSpeedLimit = 80
