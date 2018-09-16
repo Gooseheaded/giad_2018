@@ -26,7 +26,6 @@ Dock
 		pixel_y -= 53
 
 	Click()
-		GenerateOffers()
 		DisplayTradingMenu(usr.client, src)
 
 	proc

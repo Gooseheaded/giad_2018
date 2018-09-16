@@ -33,9 +33,11 @@ proc/DisplayTradingMenu(client/c, Dock/dock)
 	var/obj/windowTitle = new()
 	windowTitle.screen_loc = "12,11"
 	windowTitle.layer = 6
-	windowTitle.maptext_width = 256
+	windowTitle.maptext_width = 275
 	windowTitle.maptext_height = 64
 	windowTitle.maptext = MAPTEXT_COLOR + "<b><font size=4>[dock.name]</font></b>"
+	if (length(dock.name) >= 20)
+		windowTitle.maptext_y = -7
 
 	toClear.Add(windowTitle)
 	c.screen.Add(windowTitle)
