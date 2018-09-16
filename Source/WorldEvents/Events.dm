@@ -29,7 +29,7 @@ proc
 		randomEventLoop = TRUE
 
 		spawn while(TRUE)
-			var/option = 3//rand(1,4)
+			var/option = rand(1,4)
 			if (option == 1)
 				RoyalTax()
 			else if (option == 2)

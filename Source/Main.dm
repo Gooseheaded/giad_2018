@@ -3,6 +3,10 @@
  */
 
 
+world
+	hub="Gooseheaded.TheShoresofAdora"
+
+
 //here are the global variables
 
 var
