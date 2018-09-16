@@ -18,6 +18,9 @@ proc/DisplayHomebankingMenu(client/c, HomeIsland/home)
 	if (!IsPlayerAtHome(c, home))
 		return
 
+	c.myShip.isDocked = 1
+	c.myShip.Repair()
+
 	//32 x 18
 	var/list/toClear = DisplaySlicedHud(c, 'Assets/HUD.dmi', 9,15, 23,3 ,5)
 

@@ -42,7 +42,6 @@ TradeRoute
 			nodes += n
 
 		RemoveNode(TradeNode/n)
-
 			nodes -= n
 			if(nodeIndex > nodes.len)
 				nodeIndex = 0

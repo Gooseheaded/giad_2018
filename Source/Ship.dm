@@ -49,6 +49,11 @@ Ship
 
 		isHostile = 0
 
+		health = 100
+		maxHealth = 100
+
+		isDead = 0
+
 		tmp
 			//sub pixel coordinates for step_x and step_y
 			subX = 0
@@ -76,6 +81,12 @@ Ship
 
 			bigRadius = 70 //this is for wide collision checks.
 
+			fireTargets[0]
+			targetRange = 32
+
+			isDocked
+			showCannons = 0
+
 	New()
 		.=..()
 		CreateShadow()
@@ -92,6 +103,9 @@ Ship
 		for(var/Collider/C in colliders)
 			C.parent = src
 
+		for(var/Cannon/C in cannons)
+			C.parent = src
+
 		PixelCoordsUpdate()
 		CollidersUpdate()
 
@@ -103,6 +117,9 @@ Ship
 		..()
 
 	TickUpdate()
+		if(isDocked) return
+		if(isDead) return
+
 		//handle accelerations here
 		var/vector/acceleration = new(currentSpeed,0,0)
 		acceleration = acceleration.rotateAboutAxis(vec3(0,0,1) , angle)
@@ -116,12 +133,74 @@ Ship
 
 
 		//run the physics
+
 		PhysicsStep()
 
 		//if the physics failed, do a collision event?
+		//idfk
+
+		//process cannons!
+		if(cannons.len && fireTargets.len)
+			while(null in fireTargets)
+				fireTargets -= null
+
+			if(istype(src,/Ship/StarterCaravel))
+				ShowCannonFireArcs()
+
+			for(var/Ship/S in fireTargets)
+				if(get_dist(src, S) > targetRange)
+					fireTargets -= S
+					continue
+
+				for(var/Cannon/C in cannons)
+					if(!C.CanFireAt(S)) continue
+
+					C.FireAt(S)
+		else
+			if(showCannons)
+				HideCannonFireArcs()
 
 
 	proc
+		ShowCannonFireArcs()
+			if(showCannons) return
+
+			world<<"SHOW THE FUCKIN CANNONS"
+
+			showCannons = 1
+
+			for(var/Cannon/C in cannons)
+				world<<"CANNON ANGLE: [C.angle]"
+				if(C.fireArc >= 90) continue
+				var/obj/I = new()
+				I.icon = 'CannonArc.dmi'
+				I.blend_mode = BLEND_ADD
+
+				var/matrix/M = new()
+				M.Turn(-45)
+
+				var/xScale = 1
+				var/y0 = 127.26
+				var/yScale = 90 * sin(C.fireArc) / y0 * 2
+				M.Scale(xScale, yScale)
+
+				M.Translate(-63,0)
+
+				M.Turn(180)
+
+				M.Turn(-C.angle)
+				I.transform = M
+
+				src.overlays += I
+
+
+		HideCannonFireArcs()
+			if(!showCannons) return
+
+			showCannons = 0
+
+			src.overlays.Cut()
+
 		SetSpeedMode(mode)
 			switch(mode)
 				if(-1) currentSpeed = revSpeedLimit
@@ -155,7 +234,7 @@ Ship
 			ma.appearance_flags |= RESET_COLOR | RESET_ALPHA
 			ma.filters += filter(type="blur", size = 2)
 
-			overlays += ma
+			underlays += ma
 
 
 
@@ -249,6 +328,8 @@ Ship
 
 
 		PhysicsStep(var/dt = deltaTime)
+			if(isDead) return
+			if(isDocked) return
 			//this function returns a nonzero if this physics step caused a collision.
 			var/collisionState = 0
 
@@ -307,6 +388,52 @@ Ship
 
 			return 1
 
+		Sink()
+			//this depends on if the ship is an NPC or a player...
+			if(health > 0) return
+			if(isDead) return
+			isDead = 1
+			overlays.Cut()
+
+			new/Explosion(src)
+
+
+			animate(src, color = "#000000", alpha = 0, time = 30)
+			spawn(10)
+				new/Explosion(src)
+
+			spawn(50)
+
+				if(!client)
+					del src
+				else
+					Respawn()
+
+
+		Respawn()
+			if(!client) return
+
+			for(var/AI/PirateAI/AI)
+				if(AI.chaseTarget == src) AI.chaseTarget = null
+
+			animate(src, color = "#FFFFFF", alpha = 255, time = 5)
+
+			invisibility = 0
+			for(var/i in cargo)
+				cargo[i] = 0
+			//lose $100
+			client.coins -= 100
+			client.UpdateResourcesHud()
+
+			//teleport me home and wipe my cargo
+			isDead = 0
+			health = maxHealth
+			isDocked = 0
+
+
+		Repair()
+			health = maxHealth
+
 
 Wake //this is the wake particle that is emitted by ships
 	parent_type = /obj
@@ -343,6 +470,29 @@ Wake //this is the wake particle that is emitted by ships
 
 		WaterEffect()
 
+
+		spawn(duration * 10)
+			del src
+
+Explosion
+	parent_type = /obj
+	blend_mode = BLEND_ADD
+	mouse_opacity = 0
+
+	var/duration = 0.267
+
+	icon = 'Explosion.dmi'
+	icon_state = ""
+
+	pixel_x = -32
+	pixel_y = -32
+
+	New(atom/movable/S)
+		.=..()
+		loc = S.loc
+		step_x = S.step_x
+		step_y = S.step_y
+		layer = S.layer + 1
 
 		spawn(duration * 10)
 			del src
