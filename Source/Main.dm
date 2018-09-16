@@ -128,6 +128,15 @@ client
 			if(C != src)
 				del src //THIS IS A FUCKIN SINGLEPLAYER GAME OK
 		.=..()
+		GameStart()
+
+	proc
+		GameStart()
+
+			var/HomeIsland/H = locate()
+			H.PixelCoordsUpdate()
+
+			CreateStarterShip(vec2(H.pX, H.pY), H.z)
 
 atom
 	proc
